@@ -8,7 +8,7 @@ Change directory to repoitory: `cd DIGG_ML-AI_API`
 
 Create a virtual enviroment inside the repository with python 3.9.x using virtualenv: `virtualenv -p /path/to/Python/Python39/python.exe venv`
 
-Activate the virtual enviroment: `venv\Scripts\activate`
+Activate the virtual enviroment: `venv\Scripts\activate` or `. ./venv/Scripts/activate`
 
 Install the dependencies using pip: `pip install -r requirements.txt`
 
