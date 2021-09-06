@@ -1,0 +1,14 @@
+git status:
+Get status of your folders
+
+git pull:
+Download/refresh the folders
+
+git add *:
+Add my local files to the repository
+
+git commit -m "----":
+Set up my folders 
+
+git push:
+Upload to the github
