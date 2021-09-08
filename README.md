@@ -14,7 +14,11 @@ Install the dependencies using pip: `pip install -r requirements.txt`
 
 # Run
 
-`python run.py`
+Build docker image: `docker build --tag python-docker .`
+
+Run docker image: `docker run python-docker`
+
+# Access urls
 
 Root url: http://localhost:5000/
 
