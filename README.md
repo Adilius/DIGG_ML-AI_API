@@ -6,19 +6,24 @@ Clone the repository: `git clone https://github.com/Adilius/DIGG_ML-AI_API.git`
 
 Change directory to repoitory: `cd DIGG_ML-AI_API`
 
+# Run docker
+
+Start docker desktop
+
+Build & run docker image: `docker-compose up`
+
+# Run single files
+
+Change directory to api-service: ` cd .\api-service\`
+
 Create a virtual enviroment inside the repository with python 3.9.x using virtualenv: `virtualenv -p /path/to/Python/Python39/python.exe venv`
 
 Activate the virtual enviroment: `venv\Scripts\activate`
 
 Install the dependencies using pip: `pip install -r requirements.txt`
 
-# Run
 
-Build docker image: `docker build --tag python-docker .`
-
-Run docker image: `docker run python-docker`
-
-# Access urls
+# Access urls to docker
 
 Root url: http://localhost:8080/api
 
