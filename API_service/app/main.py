@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Request
 import requests
 
+print("Hello I'm main.py running FastAPI")
+
 app = FastAPI()
 
 @app.on_event("startup")
