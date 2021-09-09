@@ -3,7 +3,7 @@ import requests
 
 print("Hello I'm main.py running FastAPI")
 
-app = FastAPI()
+app = FastAPI(prefix='/api')
 
 @app.on_event("startup")
 async def startup():
@@ -24,4 +24,3 @@ async def root(request: Request):
     response_body = response.json()
     return {"message": "Requesting from url: " + api_url,
             "response:": response_body}
-
