@@ -31,6 +31,8 @@ Docs urls: http://localhost:8080/api/docs
 
 Dataset url: http://localhost:8080/api/dataset/ (where our logic goes)
 
+Dataset test url: http://localhost:8080/api/dataset/url/?url=https://opendata.umea.se/api/v2/catalog/datasets/skyddade-omraden-djur-och-vaxtskyddsomraden-sverigesweden/records
+
 # Useful git commands
 List new or modified files not yet commited: `git status`
 

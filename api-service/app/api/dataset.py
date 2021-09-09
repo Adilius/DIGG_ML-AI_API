@@ -7,12 +7,17 @@ dataset = APIRouter()
 async def root():
     return {"message": "Hello World!"}
 
-@dataset.get("/api")
-async def root(request: Request):
-    api_url = request.headers.get('api_url')
-    print(api_url)
-    #response = requests.get(api_url)
-    #response_body = response.json()
-    return  {"message": "Requesting from url: " + api_url,
-            #"response:": response_body
-            }
+#try this link
+#http://localhost:8080/api/dataset/url/?url=https://opendata.umea.se/api/v2/catalog/datasets/skyddade-omraden-djur-och-vaxtskyddsomraden-sverigesweden/records
+@dataset.get("/url/")
+async def root(url: str):
+    print(f'url = {url}')
+    try:
+        response = requests.get(url)
+        response_body = response.json()
+    except:
+        return {"message": "Could not read API url"}
+    else:
+        return  {"message": f"Requesting from url: {url}",
+                "response:": response_body
+                }
