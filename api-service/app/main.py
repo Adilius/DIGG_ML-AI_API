@@ -1,9 +1,11 @@
 from fastapi import FastAPI, Request
 import requests
 
+from app.api.dataset import dataset
+
 print("Hello I'm main.py running FastAPI")
 
-app = FastAPI(prefix='/api')
+app = FastAPI(openapi_url="/api/openapi.json", docs_url="/api/docs")
 
 @app.on_event("startup")
 async def startup():
@@ -13,14 +15,4 @@ async def startup():
 async def startup():
     print('Shutting down.....')
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World!"}
-
-@app.get("/api")
-async def root(request: Request):
-    api_url = request.headers.get('api_url')
-    response = requests.get(api_url)
-    response_body = response.json()
-    return {"message": "Requesting from url: " + api_url,
-            "response:": response_body}
+app.include_router(dataset, prefix='/api/dataset', tags=['dataset'])

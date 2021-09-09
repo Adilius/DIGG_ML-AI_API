@@ -20,9 +20,11 @@ Run docker image: `docker run python-docker`
 
 # Access urls
 
-Root url: http://localhost:5000/
+Root url: http://localhost:8080/api
 
-Docs urls: http://localhost:5000/docs
+Docs urls: http://localhost:8080/api/docs
+
+Dataset url: http://localhost:8080/api/dataset/ (where our logic goes)
 
 # Useful git commands
 List new or modified files not yet commited: `git status`
