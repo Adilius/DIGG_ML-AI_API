@@ -3,9 +3,7 @@ import requests
 
 dataset = APIRouter()
 
-@dataset.get('/')
-async def root():
-    return {"message": "Hello World!"}
+
 
 #try this link
 #http://localhost:8080/api/dataset/url/?url=https://opendata.umea.se/api/v2/catalog/datasets/skyddade-omraden-djur-och-vaxtskyddsomraden-sverigesweden/records
