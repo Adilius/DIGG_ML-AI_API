@@ -2,9 +2,8 @@
 Enabling open data for machine learning and AI
 
 # Setup
-Clone the repository: `git clone https://github.com/Adilius/DIGG_ML-AI_API.git`
 
-Change directory to repoitory: `cd DIGG_ML-AI_API`
+Clone the repository: `git clone https://github.com/Adilius/DIGG_ML-AI_API.git`
 
 # Run docker
 
@@ -14,14 +13,9 @@ Build & run docker image: `docker-compose up`
 
 # Run single files
 
-Change directory to api-service: ` cd .\api-service\`
+Run build & run docker first
 
-Create a virtual enviroment inside the repository with python 3.9.x using virtualenv: `virtualenv -p /path/to/Python/Python39/python.exe venv`
-
-Activate the virtual enviroment: `venv\Scripts\activate`
-
-Install the dependencies using pip: `pip install -r requirements.txt`
-
+Open bash terminal in virtual enviroment: `docker exec -it api bash`
 
 # Access urls to docker
 
