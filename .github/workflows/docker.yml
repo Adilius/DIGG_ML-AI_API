@@ -1,0 +1,29 @@
+name: docker-compose-actions-workflow
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    branches:
+      - master
+      - develop
+  
+jobs:
+  docker:
+    name: Docker testing
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Start containers
+        run: docker-compose -f "docker-compose.yml" up
+
+      - name: Testing
+        run: curl http://localhost:8080/api/dataset/ 
+
+      - name: Stop containers
+        run: docker-compose
