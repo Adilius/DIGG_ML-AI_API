@@ -1,4 +1,4 @@
-# DIGG project A
+# DIGG project A.
 Enabling open data for machine learning and AI
 
 # Setup
