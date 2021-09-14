@@ -37,3 +37,11 @@ Stages all changed files: `git add .`
 Commit staged files: `git commit -m "commit message`
 
 Push local changes to Github: `git push`
+
+Create new branch: `git checkout -b branchname`
+
+Push new branch to Github: `git push origin branchname`
+ 
+delete branch locally: `git branch -d localBranchName`
+
+delete branch remotely: `git push origin --delete remoteBranchName`
