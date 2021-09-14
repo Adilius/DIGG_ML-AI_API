@@ -26,4 +26,4 @@ jobs:
         run: curl -o -s -w "%{http_code}\n" http://localhost:8080/api/dataset/ --fail
 
       - name: Stop containers
-        run: docker-compose
+        run: docker-compose down
