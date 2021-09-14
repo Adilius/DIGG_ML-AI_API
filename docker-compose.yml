@@ -32,6 +32,7 @@ services:
       - 8001:8000
     depends_on:
       - db
+    
 
   nginx:
     image: nginx:latest
