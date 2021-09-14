@@ -47,3 +47,17 @@ Push local changes to Github: `git push`
 Create new branch: `git checkout -b branchname`
 
 Push new branch to Github: 'git push origin branchname`
+
+# Create enviroment file containing database credentials
+
+Create file /DIGG_ML-AI_API/.env/
+
+Paste following information:
+#
+DATABASE_URL=postgresql+psycopg2://postgres:password@db:5432/db
+DB_USER=postgres
+DB_PASSWORD=password
+DB_NAME=db 
+PGADMIN_EMAIL=admin@admin.com
+PGADMIN_PASSWORD=admin
+#
