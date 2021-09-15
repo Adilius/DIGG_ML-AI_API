@@ -1,15 +1,13 @@
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter
 import requests
 
-dataset = APIRouter()
+api_router = APIRouter()
 
-@dataset.get('/')
+@api_router.get('/')
 async def root():
     return {"message": "Hello World!"}
 
-#try this link
-#http://localhost:8080/api/dataset/url/?url=https://opendata.umea.se/api/v2/catalog/datasets/skyddade-omraden-djur-och-vaxtskyddsomraden-sverigesweden/records
-@dataset.get("/url/")
+@api_router.get("/url/")
 async def root(url: str):
     print(f'url = {url}')
     try:

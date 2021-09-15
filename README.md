@@ -19,13 +19,27 @@ Open bash terminal in virtual enviroment: `docker exec -it api bash`
 
 # Access urls to docker
 
-Root url: http://localhost:8080/api
+Root url: http://localhost:8080/
 
-Docs urls: http://localhost:8080/api/docs
+Docs urls: http://localhost:8080/docs
 
-Dataset url: http://localhost:8080/api/dataset/ (where our logic goes)
+Dataset url: http://localhost:8080/api/ (where our logic goes)
 
-Dataset test url: http://localhost:8080/api/dataset/url/?url=https://opendata.umea.se/api/v2/catalog/datasets/skyddade-omraden-djur-och-vaxtskyddsomraden-sverigesweden/records
+Dataset test url: http://localhost:8080/api/url/?url=https://opendata.umea.se/api/v2/catalog/datasets/skyddade-omraden-djur-och-vaxtskyddsomraden-sverigesweden/records
+
+# Project structure
+
+```
+├── api-service             # Directory for API service container
+│   ├── Dockerfile          # Dockerfile for API service container
+│   ├── requirements.txt    # Requirements for Python modules used by container
+│   └── app                 # Directory containing all application logic
+│       ├── __init__.py     # Initialize module 
+│       ├── main.py         # Starts FastAPI server
+│       └── router          # Contains logic for /api/ routes
+│           ├── __init__.py # Initialize module
+│           └── api.py      # Handles /api/ routes
+```
 
 # Useful git commands
 List new or modified files not yet commited: `git status`
