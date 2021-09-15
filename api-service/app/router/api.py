@@ -9,6 +9,7 @@ async def root():
 
 @api_router.get("/url/")
 async def root(url: str):
+    print('Incoming request')
     print(f'url = {url}')
     try:
         response = requests.get(url)
@@ -16,6 +17,6 @@ async def root(url: str):
     except:
         return {"message": "Could not read API url"}
     else:
-        return  {"message": f"Requesting from url: {url}",
+        return  {"Request URL": url,
                 "response:": response_body
                 }
