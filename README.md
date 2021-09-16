@@ -51,6 +51,8 @@ Push new branch to Github: 'git push origin branchname`
 # Create enviroment file containing database credentials
 
 Create file /DIGG_ML-AI_API/.env/
+# AND
+Create file /DIGG_ML-AI_API/db-service/.env/
 
 Paste following information:
 #
