@@ -1,4 +1,4 @@
-# DIGG project A
+# DIGG project A.
 Enabling open data for machine learning and AI
 
 # Setup
@@ -53,6 +53,38 @@ Commit staged files: `git commit -m "commit message`
 Push local changes to Github: `git push`
 
 Create new branch: `git checkout -b branchname`
+
+Push new branch to Github: 'git push origin branchname`
+
+# DB commands
+Create new migration from models.py: `docker-compose run db_service alembic revision --autogenerate -m "New Migration"`
+
+Update database with new migration: `docker-compose run db_service alembic upgrade head`
+
+# PGAdmin
+Link: http://localhost:5050
+
+Username: admin@admin.com
+
+Password: admin
+
+Create server manually (for now): 
+
+    General:
+
+        Name: db
+
+    Connection:
+
+        Host: db
+
+        Port: 5432
+
+        Maintenance database: postgres
+
+        Username: postgres
+
+        Password: password
 
 Push new branch to Github: `git push origin branchname`
  
