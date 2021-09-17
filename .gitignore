@@ -137,6 +137,11 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# Alembic migrations
+db-service/alembic/versions
+!db-service/alembic/versions/placeholder.txt
+
 ######### PYTHON #########
 
 ######### DOCKER #########
