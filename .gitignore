@@ -139,7 +139,7 @@ dmypy.json
 cython_debug/
 
 # Alembic migrations
-db-service/alembic/versions
+db-service/alembic/versions/*
 !db-service/alembic/versions/placeholder.txt
 
 ######### PYTHON #########
