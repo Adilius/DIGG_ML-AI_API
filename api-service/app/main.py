@@ -1,11 +1,7 @@
-from fastapi import FastAPI, Request
-import requests
+from fastapi import FastAPI
+from app.router.api import api_router
 
-from app.api.dataset import dataset
-
-print("Hello I'm main.py running FastAPI")
-
-app = FastAPI(openapi_url="/api/openapi.json", docs_url="/api/docs")
+app = FastAPI(openapi_url="/openapi.json", docs_url="/docs")
 
 @app.get("/")
 async def root():
@@ -23,4 +19,4 @@ async def startup():
 async def startup():
     print('Shutting down.....')
 
-app.include_router(dataset, prefix='/api/dataset', tags=['dataset'])
+app.include_router(api_router, prefix='/api', tags=['api'])

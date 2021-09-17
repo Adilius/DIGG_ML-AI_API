@@ -2,9 +2,8 @@
 Enabling open data for machine learning and AI
 
 # Setup
-Clone the repository: `git clone https://github.com/Adilius/DIGG_ML-AI_API.git`
 
-Change directory to repoitory: `cd DIGG_ML-AI_API`
+Clone the repository: `git clone https://github.com/Adilius/DIGG_ML-AI_API.git`
 
 # Run docker
 
@@ -14,24 +13,33 @@ Build & run docker image: `docker-compose up`
 
 # Run single files
 
-Change directory to api-service: ` cd .\api-service\`
+Run build & run docker first
 
-Create a virtual enviroment inside the repository with python 3.9.x using virtualenv: `virtualenv -p /path/to/Python/Python39/python.exe venv`
-
-Activate the virtual enviroment: `venv\Scripts\activate`
-
-Install the dependencies using pip: `pip install -r requirements.txt`
-
+Open bash terminal in virtual enviroment: `docker exec -it api bash`
 
 # Access urls to docker
 
-Root url: http://localhost:8080/api
+Root url: http://localhost:8080/
 
-Docs urls: http://localhost:8080/api/docs
+Docs urls: http://localhost:8080/docs
 
-Dataset url: http://localhost:8080/api/dataset/ (where our logic goes)
+Dataset url: http://localhost:8080/api/ (where our logic goes)
 
-Dataset test url: http://localhost:8080/api/dataset/url/?url=https://opendata.umea.se/api/v2/catalog/datasets/skyddade-omraden-djur-och-vaxtskyddsomraden-sverigesweden/records
+Dataset test url: http://localhost:8080/api/url/?url=https://opendata.umea.se/api/v2/catalog/datasets/skyddade-omraden-djur-och-vaxtskyddsomraden-sverigesweden/records
+
+# Project structure
+
+```
+├── api-service             # Directory for API service container
+│   ├── Dockerfile          # Dockerfile for API service container
+│   ├── requirements.txt    # Requirements for Python modules used by container
+│   └── app                 # Directory containing all application logic
+│       ├── __init__.py     # Initialize module 
+│       ├── main.py         # Starts FastAPI server
+│       └── router          # Contains logic for /api/ routes
+│           ├── __init__.py # Initialize module
+│           └── api.py      # Handles /api/ routes
+```
 
 # Useful git commands
 List new or modified files not yet commited: `git status`
@@ -46,6 +54,7 @@ Push local changes to Github: `git push`
 
 Create new branch: `git checkout -b branchname`
 
+<<<<<<< HEAD
 Push new branch to Github: 'git push origin branchname`
 
 # DB commands
@@ -78,3 +87,10 @@ Create server manually (for now):
 
         Password: password
 
+=======
+Push new branch to Github: `git push origin branchname`
+ 
+delete branch locally: `git branch -d localBranchName`
+
+delete branch remotely: `git push origin --delete remoteBranchName`
+>>>>>>> 3ce474f2d04585286d1537593a3e28418a2fc7fe
