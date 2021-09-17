@@ -62,19 +62,19 @@ Password: admin
 
 Create server manually (for now): 
 
-General:
+    General:
 
-    Name: db
+        Name: db
 
-Connection:
+    Connection:
 
-    Host: db
+        Host: db
 
-    Port: 5432
+        Port: 5432
 
-    Maintenance database: postgres
+        Maintenance database: postgres
 
-    Username: postgres
+        Username: postgres
 
-    Password: password
+        Password: password
 
