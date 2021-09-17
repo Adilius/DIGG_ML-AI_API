@@ -48,18 +48,26 @@ Create new branch: `git checkout -b branchname`
 
 Push new branch to Github: 'git push origin branchname`
 
-# Create enviroment file containing database credentials
+# DB commands
+Create new migration from models.py: `docker-compose run db_service alembic revision --autogenerate -m "New Migration"`
 
-Create file /DIGG_ML-AI_API/.env/
-# AND
-Create file /DIGG_ML-AI_API/db-service/.env/
+Update database with new migration: `docker-compose run db_service alembic upgrade head`
 
-Paste following information:
-#
-DATABASE_URL=postgresql+psycopg2://postgres:password@db:5432/db
-DB_USER=postgres
-DB_PASSWORD=password
-DB_NAME=db 
-PGADMIN_EMAIL=admin@admin.com
-PGADMIN_PASSWORD=admin
-#
+# PGAdmin
+Link: http://localhost:5050
+
+Username: admin@admin.com
+
+Password: admin
+
+Create server manually (for now): 
+
+General:
+    Name: db
+
+Connection:
+    Host: db
+    Port: 5432
+    Maintenance database: postgres
+    Username: postgres
+    Password: password
