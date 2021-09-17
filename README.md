@@ -54,7 +54,6 @@ Push local changes to Github: `git push`
 
 Create new branch: `git checkout -b branchname`
 
-<<<<<<< HEAD
 Push new branch to Github: 'git push origin branchname`
 
 # DB commands
@@ -87,10 +86,8 @@ Create server manually (for now):
 
         Password: password
 
-=======
 Push new branch to Github: `git push origin branchname`
  
 delete branch locally: `git branch -d localBranchName`
 
 delete branch remotely: `git push origin --delete remoteBranchName`
->>>>>>> 3ce474f2d04585286d1537593a3e28418a2fc7fe
