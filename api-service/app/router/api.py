@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 import requests
+from ..algorithm import json_counter
 
 api_router = APIRouter()
 
@@ -20,3 +21,8 @@ async def root(url: str):
         return  {"Request URL": url,
                 "response:": response_body
                 }
+
+@api_router.get("/temp/")
+async def root():
+    res = json_counter.hello_world()
+    return res
