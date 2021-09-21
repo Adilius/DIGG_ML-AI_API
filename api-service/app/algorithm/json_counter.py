@@ -1,20 +1,14 @@
 
-#JSON Dataset downloaded from this link: https://opendata.umea.se/api/v2/catalog/datasets/skyddade-omraden-djur-och-vaxtskyddsomraden-sverigesweden/records
-
 #Project created: 2021-09-13
 #Developer: Björn Norén
-
-#Datafile: open_data_umea.json
 
 # Information: This application reads a JSON-file and returns all the datatypes within the JSON-file
 
 import json
-#f = open('../../Datasets/open_data_umea.json',)
-
+import requests
 
 # returns JSON object as 
 # a dictionary
-#data = json.load(f)
 
 def look_for_dicts(data):    
     if type(data) == dict:
@@ -29,9 +23,19 @@ def look_for_dicts(data):
             if type(data[s]) == dict:
                 look_for_dicts(data[s])
 
-#look_for_dicts(data)
+def look_for_dicts_from_api():
 
-print("Lägg in JSON fil:")
+    # example api from dataportal.se : https://konsumentverket.entryscape.net/rowstore/dataset/86ce5095-1641-4390-8987-bdc3c77625a7
+    url = input("enter url for API: ")
+    response = requests.get(url)
+
+    # if response is valid 
+    if (response.status_code == 200):
+        data = response.json()
+        if (type(data) == dict):
+            look_for_dicts(data)
 
 def hello_world():
     return {"Hello":"world"}
+
+look_for_dicts_from_api()
