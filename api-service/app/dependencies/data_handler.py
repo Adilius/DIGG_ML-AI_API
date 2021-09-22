@@ -1,10 +1,12 @@
-import validators
+#import validators
 import requests
 import json
 import csv
 
 def validateURL(url: str):
-    if validators.url(url):
+    #if validators.url(url):
+    # Temp solution, fix validators module import error
+    if True:
         validated_response = getURL(url)
         return validated_response
     else:
