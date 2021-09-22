@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 import requests
 from ..algorithm import json_counter
+from ..dependencies import data_handler
 
 api_router = APIRouter()
 
@@ -10,17 +11,11 @@ async def root():
 
 @api_router.get("/url/")
 async def root(url: str):
-    print('Incoming request')
+    print('Incoming url request')
     print(f'url = {url}')
-    try:
-        response = requests.get(url)
-        response_body = response.json()
-    except:
-        return {"message": "Could not read API url"}
-    else:
-        return  {"Request URL": url,
-                "response:": response_body
-                }
+    response = data_handler.validateURL(url)
+    return response
+
 
 @api_router.get("/temp/")
 async def root():

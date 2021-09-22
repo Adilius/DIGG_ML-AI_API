@@ -1,0 +1,17 @@
+https://opendata.umea.se/api/v2/catalog/datasets/skyddade-omraden-djur-och-vaxtskyddsomraden-sverigesweden/exports/csv
+https://opendata.umea.se/api/v2/catalog/datasets/miljobilar-andel-av-totalt-antal-bilar-i-det-geografiska-omradet-kolada/exports/csv
+https://opendata.umea.se/api/v2/catalog/datasets/energiforbrukning-i-geografiska-omradet-092021-boleang-vastra/exports/csv
+https://opendata.umea.se/api/v2/catalog/datasets/skyddade-omraden-fageldirektivet-natura-2000-spa-sverigesweden/exports/csv
+https://opendata.umea.se/api/v2/catalog/datasets/energiforbrukning-i-geografiska-omradet-050801-i-20/exports/csv
+https://opendata.umea.se/api/v2/catalog/datasets/historiska-badvattentemperaturer-2019-fran-iot-projektet/exports/csv
+https://opendata.umea.se/api/v2/catalog/datasets/kartor/exports/csv
+https://opendata.umea.se/api/v2/catalog/datasets/energiforbrukning-i-geografiska-omradet-092018-industriomrade-volvo/exports/csv
+https://opendata.umea.se/api/v2/catalog/datasets/energiforbrukning-i-geografiska-omradet-154108-obbola/exports/csv
+https://opendata.umea.se/api/v2/catalog/datasets/energiforbrukning-i-geografiska-omradet-092308-roback/exports/csv
+https://opendata.umea.se/api/v2/catalog/datasets/energiforbrukning-i-geografiska-omradet-092001-boleang-sodra/exports/csv
+https://opendata.umea.se/api/v2/catalog/datasets/konsten-umea-kommun/exports/csv
+https://opendata.umea.se/api/v2/catalog/datasets/energiforbrukning-i-geografiska-omradet-0612-del-av-backen/exports/csv
+https://opendata.umea.se/api/v2/catalog/datasets/leverantorsfakturor-2017/exports/csv
+https://opendata.umea.se/api/v2/catalog/datasets/skyddade-omraden-nationalparker-sverigesweden/exports/csv
+https://opendata.umea.se/api/v2/catalog/datasets/energiforbrukning-i-geografiska-omradet-092002-bolea-vastra/exports/csv
+https://opendata.umea.se/api/v2/catalog/datasets/corona-information-till-riskgrupper-om-affarers-anpassningar-for-dem/exports/csv
