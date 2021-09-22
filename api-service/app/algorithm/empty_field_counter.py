@@ -44,4 +44,4 @@ def main():
     #arrayPrinter(columnNames)
     emptyCheck(result, columnNames)
 
-main()
+#main()
