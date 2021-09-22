@@ -1,0 +1,6 @@
+https://opendata.umea.se/api/v2/catalog/datasets/skyddade-omraden-djur-och-vaxtskyddsomraden-sverigesweden/exports/geojson
+https://opendata.umea.se/api/v2/catalog/datasets/skyddade-omraden-fageldirektivet-natura-2000-spa-sverigesweden/exports/geojson
+https://opendata.umea.se/api/v2/catalog/datasets/historiska-badvattentemperaturer-2019-fran-iot-projektet/exports/geojson
+https://opendata.umea.se/api/v2/catalog/datasets/konsten-umea-kommun/exports/geojson
+https://opendata.umea.se/api/v2/catalog/datasets/skyddade-omraden-nationalparker-sverigesweden/exports/geojson
+https://opendata.umea.se/api/v2/catalog/datasets/corona-information-till-riskgrupper-om-affarers-anpassningar-for-dem/exports/geojson
