@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 import requests
 from ..algorithm import json_counter
+from ..algorithm import main
 from ..dependencies import data_handler
 
 api_router = APIRouter()
@@ -17,7 +18,10 @@ async def root(url: str):
     return response
 
 
-@api_router.get("/temp/")
-async def root():
-    res = json_counter.hello_world()
+@api_router.get("/eval/")
+async def root(url: str):
+    print('Incoming eval request')
+    print(f'url = {url}')
+    response = data_handler.validateURL(url)
+    res = main.evaluate_dataset(response)
     return res
