@@ -24,12 +24,13 @@ services:
       - db
 
   db_service:
+    container_name: DB_Service 
     build: ./db-service
-    command: bash -c "alembic upgrade head && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
+    command: bash -c "alembic upgrade head && uvicorn app.main:app --reload --host 0.0.0.0 --port 8003"
     volumes:
       - ./db-service/:/app/
     ports:
-      - 8002:8000
+      - 8002:8003
     depends_on:
       - db
 
@@ -43,6 +44,7 @@ services:
       - 8001:8000
 
   nginx:
+    container_name: Nginx 
     image: nginx:latest
     ports:
       - "8080:8080"
