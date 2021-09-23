@@ -21,8 +21,8 @@ async def root():
 
 @app.post("/add-data/", response_model=SchemaDataset_table)
 def add_data(test: SchemaDataset_table):
-    #db_data = ModelDatasets(name=test.name, rating=test.rating, testProperty=test.testProperty)
-    db_data = ModelDatasets("Jonas", 5, "Winner")
+    db_data = ModelDatasets(name=test.name, rating=test.rating, testProperty=test.testProperty)
+    #db_data = ModelDatasets(name="Jonas", rating=5, testProperty="Winner")
     db.session.add(db_data)
     db.session.commit()
     return db_data
