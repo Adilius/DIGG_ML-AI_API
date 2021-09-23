@@ -12,6 +12,6 @@ class Datasets(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     rating = Column(Float)
-    testPorperty = Column(String)
+    testProperty = Column(String)
     time_created = Column(DateTime(timezone=True), server_default=func.now())
     time_updated = Column(DateTime(timezone=True), onupdate=func.now())
