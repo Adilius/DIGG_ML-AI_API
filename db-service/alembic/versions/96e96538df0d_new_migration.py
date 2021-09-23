@@ -22,7 +22,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=True),
     sa.Column('rating', sa.Float(), nullable=True),
-    sa.Column('testPorperty', sa.String(), nullable=True),
+    sa.Column('testProperty', sa.String(), nullable=True),
     sa.Column('time_created', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
     sa.Column('time_updated', sa.DateTime(timezone=True), nullable=True),
     sa.PrimaryKeyConstraint('id')
