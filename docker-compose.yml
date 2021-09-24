@@ -22,6 +22,8 @@ services:
       - 5050:80
     depends_on:
       - db
+    logging:
+      driver: "none"
 
   db_service:
     container_name: DB_Service 
