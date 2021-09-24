@@ -10,8 +10,8 @@ Base = declarative_base()
 class Datasets(Base):
     __tablename__ = "dataset_table"
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String)
-    rating = Column(Float)
-    testProperty = Column(String)
+    hash = Column(String)
+    url = Column(String)
+    evaluation = Column(String)
     time_created = Column(DateTime(timezone=True), server_default=func.now())
     time_updated = Column(DateTime(timezone=True), onupdate=func.now())
