@@ -2,9 +2,9 @@ from pydantic import BaseModel
 
 
 class Dataset_table(BaseModel):
-    name: str
-    rating: float
-    testProperty: str
+    url: str
+    hash: str
+    evaluation: str
 
     class Config:
         orm_mode = True
