@@ -19,7 +19,7 @@ jobs:
         run: docker-compose -f "docker-compose.yml" up -d
 
       - name: Testing
-        run: curl -o -s -w "%{http_code}\n" http://localhost:8080/api/dataset/ --fail
+        run: curl -w "%{http_code}\n" http://localhost:8080/api/ --fail
 
       - name: Stop containers
         run: docker-compose down
