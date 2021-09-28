@@ -32,13 +32,19 @@ async def root(url: str):
     # Get the checksum
     checksum = checksum_handler.get_checksum(response)
 
+    # Check database first
+    try:
+        response = database_handler.get_result(url, checksum)
+        return response
+    except:
+        print('No stored result found')
+
     # Get evaluation
     evaluation = main.evaluate_dataset(response)
 
     # Store in database
     try:
         response = database_handler.store_result(url, checksum, evaluation)
-        print(response)
     except:
         print('Failed to post result to database')
 
