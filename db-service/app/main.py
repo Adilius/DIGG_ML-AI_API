@@ -1,4 +1,5 @@
 import os
+from starlette.responses import JSONResponse
 
 import uvicorn
 from dotenv import load_dotenv
@@ -10,6 +11,7 @@ from models import Datasets as ModelDatasets
 from schema import Dataset_table as SchemaDataset_table
 from schema import Dataset_table as DatarowIdentifier
 from schema import Dataset_table as evaluation_model
+from schema import Dataset_table as Message
 
 load_dotenv(".env")
 
@@ -21,11 +23,14 @@ app.add_middleware(DBSessionMiddleware, db_url="postgresql+psycopg2://postgres:p
 async def root():
     return {"message": "Hello World"}
 
-@app.post("/add_data/", response_model=SchemaDataset_table)
+@app.post("/add_data/", response_model=SchemaDataset_table, responses={404: {"model": Message}})
 def add_data(data_entry: SchemaDataset_table):
     db_data = ModelDatasets(url=data_entry.url, checksum=data_entry.checksum, evaluation=data_entry.evaluation)
-    db.session.add(db_data)
-    db.session.commit()
+    try:
+        db.session.add(db_data)
+        db.session.commit()
+    except:
+        return JSONResponse(status_code=404, content={"error": "url and checksum combination already exists in database"})
     return db_data
 
 @app.get("/get_data/", response_model = evaluation_model)
