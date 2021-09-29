@@ -14,10 +14,7 @@ def validateURL(url: str):
 def getURL(url: str):
 
     # Try to get resource from url 
-    try:
-        response = requests.get(url)
-    except:
-        return {'Error': 'Failed to get resource'}
+    response = requests.get(url)
 
     # Check if we got succesful response
     if not response.ok:
