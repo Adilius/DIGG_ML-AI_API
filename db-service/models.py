@@ -9,16 +9,14 @@ Base = declarative_base()
 
 class Datasets(Base):
     __tablename__ = "dataset_table"
-    id = Column(Integer, primary_key=True, index=True)
-    checksum = Column(String)
-    url = Column(String)
+    checksum = Column(String, primary_key=True)
+    url = Column(String, primary_key=True)
     evaluation = Column(String)
     time_created = Column(DateTime(timezone=True), server_default=func.now())
     time_updated = Column(DateTime(timezone=True), onupdate=func.now())
 
     def json(self):
         return {
-            'id': self.id,
             'checksum': self.checksum,
             'url' : self.url,
             'evaluation' : self.evaluation,
