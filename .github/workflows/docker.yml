@@ -18,8 +18,8 @@ jobs:
       - name: Start containers
         run: docker-compose -f "docker-compose.yml" up -d
 
-      - name: Testing
-        run: curl -w "%{http_code}\n" http://localhost:8080/api/ --fail
+      - name: Test API
+        run: docker-compose exec api_service pytest .
 
       - name: Stop containers
         run: docker-compose down
