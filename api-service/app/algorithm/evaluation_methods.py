@@ -83,7 +83,8 @@ def EmptyCounter(data):
 def OutlierResult(data):
     FloatCounter(data)
     StandardDeviationCalculator()
-    return outlierAmount
+    outlierAmountString = str(outlierAmount) + '/' + str(len(numericList))
+    return outlierAmountString
 
 #Stores every numeric field and every field with numeric values
 def FloatCounter(data):
