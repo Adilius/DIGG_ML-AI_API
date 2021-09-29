@@ -1,4 +1,6 @@
 import math
+import json
+import requests
 
 #Example API-links:
 #No outliers: https://haninge.entryscape.net/rowstore/dataset/fb39ab31-dd4b-4414-bc5f-5af01b62a1fa/json?_limit=500
@@ -6,7 +8,8 @@ import math
 
 #Global variables for keeping track outside of functions:
 instanceAmount = 0 #Counts amount of instances (for instance counter)
-atributeList = [] #Store every atribute name (for attribute counter)
+attributeCheck = [] #To check if attribute appear more than once (if not it's part of the header)
+attributeList = [] #Store every atribute name (for attribute counter)
 emptyAmount = 0 #Counts amount of empty fields (for empty field counter)
 numericList = [] #Stores every numeric field name and result together as string and float (for outlier counter)
 numericKeyList = [] #Stores every name of numeric fields for easy access (for standard deviation calculation)
@@ -38,7 +41,7 @@ def AttributeResult(data):
 
 #Counts amount of attributes
 def AttributeCounter(data):
-    global atributeList
+    global attributeList
 
     for key in data.keys():
         keyName = str(key)
@@ -48,10 +51,12 @@ def AttributeCounter(data):
             for innerKey in data[keyName]:
                 if type(innerKey) == dict:
                     AttributeCounter(innerKey)
-        elif keyName not in atributeList:
-                atributeList.append(keyName)
+        elif keyName in attributeCheck and keyName not in attributeList:
+            attributeList.append(keyName)
+        elif keyName not in attributeCheck:
+                attributeCheck.append(keyName)
 
-    return len(atributeList)
+    return len(attributeList)
 
 #Returns amount of empty fields
 def EmptyResult(data):
@@ -137,3 +142,20 @@ def OutlierCounter(keyName, mean, stanDev):
         if value[0] == keyName:
             if value[1] > mean+(stanDev*3) or value[1] < mean-(stanDev*3):
                 outlierAmount+=1
+
+def ClearGlobals():
+    global instanceAmount
+    global attributeCheck
+    global attributeList
+    global emptyAmount
+    global numericList
+    global numericKeyList
+    global outlierAmount
+
+    instanceAmount = 0 
+    attributeCheck.clear()
+    attributeList.clear()
+    emptyAmount = 0 
+    numericList.clear()
+    numericKeyList.clear()
+    outlierAmount = 0 

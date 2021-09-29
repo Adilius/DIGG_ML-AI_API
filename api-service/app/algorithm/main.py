@@ -1,9 +1,13 @@
 import requests
-from evaluation_methods import InstanceResult, AttributeResult, EmptyResult, OutlierResult
+import json
+import time
+from .evaluation_methods import InstanceResult, AttributeResult, EmptyResult, OutlierResult, ClearGlobals
 
 def evaluate_dataset(dataset: dict):
 
     #Anropa funktioner här fär att skapa en dictionary som returneras
+
+    time.sleep(5)
 
     response = {
         'Number of instances': InstanceResult(dataset),
@@ -11,6 +15,8 @@ def evaluate_dataset(dataset: dict):
         'Missing values': EmptyResult(dataset),
         'Outliers': OutlierResult(dataset),
     }
+
+    ClearGlobals()
 
     # dummy_response = {
     #     'Number of instances': 30,
@@ -22,7 +28,7 @@ def evaluate_dataset(dataset: dict):
     
     return response
 
-#For direct testing
+#For direct testing (remove the '.' "from .evaluation_methods import ...")
 # def main():
 #     #Example API-links:
 #     #No outliers: https://haninge.entryscape.net/rowstore/dataset/fb39ab31-dd4b-4414-bc5f-5af01b62a1fa/json?_limit=500
