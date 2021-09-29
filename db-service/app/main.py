@@ -33,6 +33,33 @@ def add_data(data_entry: SchemaDataset_table):
         return JSONResponse(status_code=404, content={"error": "url and checksum combination already exists in database"})
     return db_data
 
+@app.put("/update/", response_model=SchemaDataset_table, responses={404: {"model": Message}})
+def update_data(data_entry: SchemaDataset_table):
+    update_data = ModelDatasets(url=data_entry.url, checksum=data_entry.checksum, evaluation=data_entry.evaluation)
+    try:
+        db.session.add(update_data)
+        db.session.commit()
+    except:
+        return JSONResponse(status_code=404, content={"error": "url and checksum combination already exists in database"})
+    return update_data
+
+#Fix Response body
+@app.delete("/delete/", response_model=evaluation_model, responses={404: {"model": Message}})
+def delete_book(url: str, checksum: str):
+    try:
+        query = db.session.query(Datasets).filter(
+            Datasets.url == url,
+            Datasets.checksum == checksum
+        ).first()
+        db.session.query(Datasets).filter(
+            Datasets.url == url,
+            Datasets.checksum == checksum
+        ).delete()
+        db.session.commit()
+    except:
+        return JSONResponse(status_code=404, content={"error": "Data could not be deleted for some reason"})
+    return query
+
 @app.get("/get_data/", response_model = evaluation_model)
 def get_data(url: str, checksum: str):
     query = db.session.query(Datasets).filter(
