@@ -7,7 +7,7 @@ import requests
 #Has outliers: https://catalog.sodertalje.se/rowstore/dataset/ee44b6b8-ab8c-44dc-ab0c-f7acf9a5e20d/json?_limit=500
 
 #Global variables for keeping track outside of functions:
-instanceAmount = 0 #Counts amount of instances (for instance counter)
+instanceList = [] #Stores every instance (for instance counter and duplicate counter)
 attributeCheck = [] #To check if attribute appear more than once (if not it's part of the header)
 attributeList = [] #Store every atribute name (for attribute counter)
 emptyAmount = 0 #Counts amount of empty fields (for empty field counter)
@@ -15,13 +15,14 @@ numericList = [] #Stores every numeric field name and result together as string 
 numericKeyList = [] #Stores every name of numeric fields for easy access (for standard deviation calculation)
 outlierAmount = 0 #Counts amount of outliers (for outlier counter)
 
+
 #Returns amount of instances
 def InstanceResult(data):
     return InstanceCounter(data)
 
 #Counts amount of instances
 def InstanceCounter(data):
-    global instanceAmount
+    global instanceList
 
     for key in data.keys():
         keyName = str(key)
@@ -29,11 +30,12 @@ def InstanceCounter(data):
             InstanceCounter(data[keyName])
         elif type(data[keyName]) == list:
             for innerKey in data[keyName]:
-                instanceAmount+=1
+                instanceList.append(innerKey)
+                #instanceAmount+=1
                 if type(innerKey) == dict:
                     InstanceCounter(innerKey)
 
-    return instanceAmount
+    return len(instanceList)
 
 #Returns amount of attributes
 def AttributeResult(data):
@@ -144,8 +146,27 @@ def OutlierCounter(keyName, mean, stanDev):
             if value[1] > mean+(stanDev*3) or value[1] < mean-(stanDev*3):
                 outlierAmount+=1
 
+#Returns amount of duplciates
+def DuplicateResult(data):
+    return DuplicateCounter(data)
+
+#Calculates amount of duplicates
+def DuplicateCounter(data):
+    duplicates = 0
+    for instance in instanceList:
+        duplicateCheck = 0
+        for instanceCheck in instanceList:
+            if instance == instanceCheck:
+                duplicateCheck+=1
+        if duplicateCheck > 1:
+            duplicates+=1
+            instanceList.remove(instanceCheck)
+    
+    return duplicates
+
+#Clear global values
 def ClearGlobals():
-    global instanceAmount
+    global instanceList
     global attributeCheck
     global attributeList
     global emptyAmount
@@ -153,7 +174,7 @@ def ClearGlobals():
     global numericKeyList
     global outlierAmount
 
-    instanceAmount = 0 
+    instanceList.clear()
     attributeCheck.clear()
     attributeList.clear()
     emptyAmount = 0 

@@ -1,7 +1,7 @@
 import requests
 import json
 import time
-from .evaluation_methods import InstanceResult, AttributeResult, EmptyResult, OutlierResult, ClearGlobals
+from .evaluation_methods import InstanceResult, AttributeResult, EmptyResult, OutlierResult, DuplicateResult, ClearGlobals
 
 def evaluate_dataset(dataset: dict):
 
@@ -14,6 +14,7 @@ def evaluate_dataset(dataset: dict):
         'Number of attributes': AttributeResult(dataset),
         'Missing values': EmptyResult(dataset),
         'Outliers': OutlierResult(dataset),
+        'Duplicates': DuplicateResult(dataset),
     }
 
     ClearGlobals()
