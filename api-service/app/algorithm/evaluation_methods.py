@@ -154,14 +154,15 @@ def DuplicateResult(data):
 #Calculates amount of duplicates
 def DuplicateCounter(data):
     duplicates = 0
+
     for instance in instanceList:
         duplicateCheck = 0
-        for instanceCheck in instanceList:
+        for instanceCheck in reversed(instanceList):
             if instance == instanceCheck:
                 duplicateCheck+=1
         if duplicateCheck > 1:
             duplicates+=1
-            instanceList.remove(instanceCheck)
+        instanceList.remove(instanceCheck)
     
     return duplicates
 
