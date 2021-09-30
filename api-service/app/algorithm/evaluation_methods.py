@@ -1,128 +1,75 @@
 import math
-import json
-import requests
-
-#Example API-links:
-#No outliers: https://haninge.entryscape.net/rowstore/dataset/fb39ab31-dd4b-4414-bc5f-5af01b62a1fa/json?_limit=500
-#Has outliers: https://catalog.sodertalje.se/rowstore/dataset/ee44b6b8-ab8c-44dc-ab0c-f7acf9a5e20d/json?_limit=500
 
 #Global variables for keeping track outside of functions:
-instanceList = [] #Stores every instance (for instance counter and duplicate counter)
-attributeCheck = [] #To check if attribute appear more than once (if not it's part of the header)
-attributeList = [] #Store every atribute name (for attribute counter)
-emptyAmount = 0 #Counts amount of empty fields (for empty field counter)
-numericList = [] #Stores every numeric field name and result together as string and float (for outlier counter)
-numericKeyList = [] #Stores every name of numeric fields for easy access (for standard deviation calculation)
-outlierAmount = 0 #Counts amount of outliers (for outlier counter)
-dataList = []
+instanceList = [] #Stores every instance (for getInstanceAmount and duplicateCount)
+dataList = [] #Stores every value together with key and type (for mixedTypeCount and getEmptyValueAmount)
+attributeCheck = [] #To check if attribute appear more than once, if not it's probably part of the header (for attributeAdd)
+attributeList = [] #Store every atribute that appear more than once in attributeCheck (for attributeAdd and getAttributeAmount)
+numericList = [] #Stores every key with a numeric value together with the value (for floatConverter, stanDevCalc, outlierCount and getOutlierAmount)
+numericKeyList = [] #Stores key with a numeric value (for floatConverter and stanDevCalc)
+outlierAmount = 0 #Counts amount of outliers (for outlierCount and getOutlierAmount)
 
+#Evaluate function
+def evaluate(data):
+    jsonCounter(data)
+    stanDevCalc()
 
-#Returns amount of instances
-def InstanceResult(data):
-    return InstanceCounter(data)
-
-#Counts amount of instances
-def InstanceCounter(data):
+#Goes through the entire json dataset and adds neccesary information to global variables
+def jsonCounter(data):
     global instanceList
+    global dataList
 
     for key in data.keys():
         keyName = str(key)
-        if type(data[keyName]) == dict:
-            InstanceCounter(data[keyName])
-        elif type(data[keyName]) == list:
-            for innerKey in data[keyName]:
-                instanceList.append(innerKey)
-                #instanceAmount+=1
-                if type(innerKey) == dict:
-                    InstanceCounter(innerKey)
-
-    return len(instanceList)
-
-#Returns amount of attributes
-def AttributeResult(data):
-    return AttributeCounter(data)
-
-#Counts amount of attributes
-def AttributeCounter(data):
-    global attributeList
-
-    for key in data.keys():
-        keyName = str(key)
-        if type(data[keyName]) == dict:
-            AttributeCounter(data[keyName])
-        elif type(data[keyName]) == list:
-            for innerKey in data[keyName]:
-                if type(innerKey) == dict:
-                    AttributeCounter(innerKey)
-        elif keyName in attributeCheck and keyName not in attributeList:
-            attributeList.append(keyName)
-        elif keyName not in attributeCheck:
-                attributeCheck.append(keyName)
-
-    return len(attributeList)
-
-#Returns amount of empty fields
-def EmptyResult(data):
-    return EmptyCounter(data)
-
-#Counts amount of empty fields
-def EmptyCounter(data):
-    global emptyAmount
-
-    for key in data.keys():
-        keyName = str(key)
-        if type(data[keyName]) == dict:
-            EmptyCounter(data[keyName])
-        elif type(data[keyName]) == list:
-            for innerKey in data[keyName]:
-                if type(innerKey) == dict:
-                    EmptyCounter(innerKey)
-        elif data[keyName]=="":
-                emptyAmount+=1
-
-    return emptyAmount
-
-#Returns amount of outliers
-def OutlierResult(data):
-    FloatCounter(data)
-    StandardDeviationCalculator()
-    outlierAmountString = str(outlierAmount) + '/' + str(len(numericList))
-    return outlierAmountString
-
-#Stores every numeric field and every field with numeric values
-def FloatCounter(data):
-    global numericList
-    global numericKeyList
-
-    for key in data.keys():
-        keyName = str(key)
-        if type(data[keyName]) == dict:
-            FloatCounter(data[keyName])
-        elif type(data[keyName]) == list:
-            for innerKey in data[keyName]:
-                if type(innerKey) == dict:
-                    FloatCounter(innerKey)
+        value = data[keyName]
+        valueType = type(value)
+        if valueType == dict:
+            instanceList.append(value)
+            jsonCounter(value)
+        elif valueType == list:
+            for innerValue in value:
+                if type(innerValue) == dict:
+                    instanceList.append(innerValue)
+                    jsonCounter(innerValue)
         else:
-            try:
-                floatValue = float(data[keyName].replace(',', '.'))
-                numericList.append([keyName, floatValue])
-                if keyName not in numericKeyList:
-                    numericKeyList.append(keyName)
-            except:
-                pass
+            attributeAdd(keyName)
+            floatConvert(value, keyName)
+            dataList.append([keyName, valueType, value])
 
-#Calcualtes standard deviation for every numeric field
-def StandardDeviationCalculator():
+#Adds attributes to attributeList if they appear more than once
+def attributeAdd(attribute):
+    global attributeList
+    global attributeCheck
+
+    if attribute in attributeCheck and attribute not in attributeList:
+        attributeList.append(attribute)
+    elif attribute not in attributeCheck:
+        attributeCheck.append(attribute)
+
+#Converts numeric values to float type if possible
+def floatConvert(value, keyName):
     global numericList
     global numericKeyList
-    squareList = []
+
+    try:
+        floatValue = float(value.replace(',', '.'))
+        numericList.append([keyName, floatValue])
+        if keyName not in numericKeyList:
+            numericKeyList.append(keyName)
+    except:
+        pass
+
+#Calcualtes standard deviation for every key with numeric values
+def stanDevCalc():
+    global numericList
+    global numericKeyList
 
     for keyName in numericKeyList:
         stanDev = 0
         totalValue = 0
         totalSquareValue = 0
         amount = 0
-        squareList.clear()
+        squareList = []
         for value in numericList:
             if value[0] == keyName:
                 totalValue+=value[1]
@@ -135,10 +82,10 @@ def StandardDeviationCalculator():
         for value in squareList:
             totalSquareValue+=value
         stanDev = round(math.sqrt(totalSquareValue/amount), 2)
-        OutlierCounter(keyName, mean, stanDev)
+        outlierCount(keyName, mean, stanDev)
 
 #Counts amount of outliers
-def OutlierCounter(keyName, mean, stanDev):
+def outlierCount(keyName, mean, stanDev):
     global numericList
     global outlierAmount
 
@@ -147,12 +94,9 @@ def OutlierCounter(keyName, mean, stanDev):
             if value[1] > mean+(stanDev*3) or value[1] < mean-(stanDev*3):
                 outlierAmount+=1
 
-#Returns amount of duplciates
-def DuplicateResult(data):
-    return DuplicateCounter(data)
-
-#Calculates amount of duplicates
-def DuplicateCounter(data):
+#Counts amount of duplicates
+def duplicateCount():
+    global instanceList
     duplicates = 0
 
     for instance in instanceList:
@@ -166,28 +110,8 @@ def DuplicateCounter(data):
     
     return duplicates
 
-#Returns amount of mixed datatypes
-def MixedDataTypeResult(data):
-    DataListCreator(data)
-    return MixedDataTypeCounter()
-
-#Creates a list containing every key and value type
-def DataListCreator(data):
-    global dataList
-
-    for key in data.keys():
-        keyName = str(key)
-        if type(data[keyName]) == dict:
-            DataListCreator(data[keyName])
-        elif type(data[keyName]) == list:
-            for innerKey in data[keyName]:
-                if type(innerKey) == dict:
-                    DataListCreator(innerKey)
-        else:
-            dataList.append([keyName, type(data[keyName])])
-
 #Counts amount of mixed datatypes
-def MixedDataTypeCounter():
+def mixedTypeCount():
     global dataList
     global attributeList
     mixedDataTypeAmount = 0
@@ -200,20 +124,51 @@ def MixedDataTypeCounter():
                     if attribute == valueCheck[0]:
                         if value[1] != valueCheck[1]:
                             mixedTypeCheck = True
-                            dataList.remove(valueCheck)
-                        else:
-                            dataList.remove(valueCheck)
+                        dataList.remove(valueCheck)
         if mixedTypeCheck == True:
             mixedDataTypeAmount+=1
 
     return mixedDataTypeAmount
 
+#Returns amount of instances
+def getInstanceAmount():
+    global instanceList
+    return len(instanceList)
+
+#Returns amount of attributes
+def getAttributeAmount():
+    global attributeList
+    return len(attributeList)
+
+#Returns amount of empty fields
+def getEmptyValueAmount():
+    emptyAmount = 0
+    for value in dataList:
+        if value[2] == "":
+            emptyAmount+=1
+    return emptyAmount
+
+#Returns amount of outliers
+def getOutlierAmount():
+    global outlierAmount
+    global numericList
+
+    outlierAmountString = str(outlierAmount) + '/' + str(len(numericList))
+    return outlierAmountString
+
+#Returns amount of duplicates
+def getDuplicateAmount():
+    return duplicateCount()
+
+#Returns amount of attributes with mixed datatypes
+def getMixedTypeAmount():
+    return mixedTypeCount()
+
 #Clear global values
-def ClearGlobals():
+def clearGlobals():
     global instanceList
     global attributeCheck
     global attributeList
-    global emptyAmount
     global numericList
     global numericKeyList
     global outlierAmount
@@ -222,7 +177,6 @@ def ClearGlobals():
     instanceList.clear()
     attributeCheck.clear()
     attributeList.clear()
-    emptyAmount = 0 
     numericList.clear()
     numericKeyList.clear()
     outlierAmount = 0 

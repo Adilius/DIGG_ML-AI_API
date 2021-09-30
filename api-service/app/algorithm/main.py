@@ -1,7 +1,7 @@
 import requests
 import json
 import time
-from .evaluation_methods import InstanceResult, AttributeResult, EmptyResult, OutlierResult, DuplicateResult, MixedDataTypeResult, ClearGlobals
+from .evaluation_methods import evaluate, getInstanceAmount, getAttributeAmount, getEmptyValueAmount, getOutlierAmount, getDuplicateAmount, getMixedTypeAmount, clearGlobals
 
 def evaluate_dataset(dataset: dict):
 
@@ -9,24 +9,18 @@ def evaluate_dataset(dataset: dict):
 
     time.sleep(5)
 
+    evaluate(dataset)
+
     response = {
-        'Number of instances': InstanceResult(dataset),
-        'Number of attributes': AttributeResult(dataset),
-        'Missing values': EmptyResult(dataset),
-        'Outliers': OutlierResult(dataset),
-        'Duplicate instances': DuplicateResult(dataset),
-        'Mixed datatypes': MixedDataTypeResult(dataset)
+        'Number of instances': getInstanceAmount(),
+        'Number of attributes': getAttributeAmount(),
+        'Missing values': getEmptyValueAmount(),
+        'Outliers': getOutlierAmount(),
+        'Duplicate instances': getDuplicateAmount(),
+        'Attributes with mixed datatypes': getMixedTypeAmount()
     }
 
-    ClearGlobals()
-
-    # dummy_response = {
-    #     'Number of instances': 30,
-    #     'Number of attributes': 30,
-    #     'Missing values': 37,
-    #     'Data Set Characteristics': 'Multivariate',
-
-    # }
+    clearGlobals()
     
     return response
 
