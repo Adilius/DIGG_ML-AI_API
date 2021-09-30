@@ -165,10 +165,12 @@ def DuplicateCounter(data):
     
     return duplicates
 
+#Returns amount of mixed datatypes
 def MixedDataTypeResult(data):
     DataListCreator(data)
     return MixedDataTypeCounter()
 
+#Creates a list containing every key and value type
 def DataListCreator(data):
     global dataList
 
@@ -183,6 +185,7 @@ def DataListCreator(data):
         else:
             dataList.append([keyName, type(data[keyName])])
 
+#Counts amount of mixed datatypes
 def MixedDataTypeCounter():
     global dataList
     global attributeList
@@ -203,11 +206,6 @@ def MixedDataTypeCounter():
             mixedDataTypeAmount+=1
 
     return mixedDataTypeAmount
-
-    # for value in dataList:
-    #     for valueCheck in dataList:
-    #         if value[0] == valueCheck[0]:
-    #             print(value[0])
 
 #Clear global values
 def ClearGlobals():
