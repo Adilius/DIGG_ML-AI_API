@@ -14,6 +14,7 @@ emptyAmount = 0 #Counts amount of empty fields (for empty field counter)
 numericList = [] #Stores every numeric field name and result together as string and float (for outlier counter)
 numericKeyList = [] #Stores every name of numeric fields for easy access (for standard deviation calculation)
 outlierAmount = 0 #Counts amount of outliers (for outlier counter)
+dataList = []
 
 
 #Returns amount of instances
@@ -164,6 +165,50 @@ def DuplicateCounter(data):
     
     return duplicates
 
+def MixedDataTypeResult(data):
+    DataListCreator(data)
+    return MixedDataTypeCounter()
+
+def DataListCreator(data):
+    global dataList
+
+    for key in data.keys():
+        keyName = str(key)
+        if type(data[keyName]) == dict:
+            DataListCreator(data[keyName])
+        elif type(data[keyName]) == list:
+            for innerKey in data[keyName]:
+                if type(innerKey) == dict:
+                    DataListCreator(innerKey)
+        else:
+            dataList.append([keyName, type(data[keyName])])
+
+def MixedDataTypeCounter():
+    global dataList
+    global attributeList
+    mixedDataTypeAmount = 0
+
+    for attribute in attributeList:
+        mixedTypeCheck = False
+        for value in dataList:
+            if attribute == value[0]:
+                for valueCheck in reversed(dataList):
+                    if attribute == valueCheck[0]:
+                        if value[1] != valueCheck[1]:
+                            mixedTypeCheck = True
+                            dataList.remove(valueCheck)
+                        else:
+                            dataList.remove(valueCheck)
+        if mixedTypeCheck == True:
+            mixedDataTypeAmount+=1
+
+    return mixedDataTypeAmount
+
+    # for value in dataList:
+    #     for valueCheck in dataList:
+    #         if value[0] == valueCheck[0]:
+    #             print(value[0])
+
 #Clear global values
 def ClearGlobals():
     global instanceList
@@ -173,6 +218,7 @@ def ClearGlobals():
     global numericList
     global numericKeyList
     global outlierAmount
+    global dataList
 
     instanceList.clear()
     attributeCheck.clear()
@@ -181,3 +227,4 @@ def ClearGlobals():
     numericList.clear()
     numericKeyList.clear()
     outlierAmount = 0 
+    dataList.clear()
