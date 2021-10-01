@@ -3,52 +3,96 @@ import requests
 import json
 import csv
 
-def validateURL(url: str):
-    if validators.url(url):
-    #if True:
-        validated_response = getURL(url)
+# Call this from api
+def get_data(url:str):
+
+    validated_url = validate_url(url)
+
+    #If we got error
+    if next(iter(validated_url)) == 'Error':
+        return validated_url
+
+    status, response = request_url(url)
+
+    #If we got error
+    if next(iter(status)) == 'Error':
+        return status
+
+    validated_response = validate_response(response)
+    print(validated_response)
+
+    #If we got error
+    if next(iter(validated_response)) == 'Error':
         return validated_response
+
+    #If we got JSON
+    if 'Content-type: application/json' in validated_response.values():
+        parse_response = parse_json(response)
+        return parse_response
+
+    #If we got CSV
+    if 'Content-type: text/csv' in validated_response.values():
+        parse_response = parse_csv(response)
+        return parse_response
+    
+    return {
+            "Error": "URL could not be validated"
+        }
+
+
+# Check if URL is valid
+def validate_url(url: str):
+    if validators.url(url):
+        return {'Success':'URL valid'}
     else:
         return {'Error':'URL invalid'}
 
-def getURL(url: str):
+# Make HTTP GET request to URL
+def request_url(url: str):
 
-    # Try to get resource from url 
-    response = requests.get(url)
+    # Try to get resource from url
+    try:
+        response = requests.get(url)
+    except:
+        return (
+            { 'Error':'Failed to send request to url'},
+            None)
 
     # Check if we got succesful response
-    if not response.ok:
-        return {'Error': f'Status code: {response.status_code}'}
+    if response.ok:
+        return (
+            {'Success': f'Status code: {response.status_code}'},
+            response)
     else:
-        validated_response = validateResponse(response)
-        return(validated_response)
+        return (
+            {'Error': f'Status code: {response.status_code}'},
+            None)
 
 
-def validateResponse(response):
+def validate_response(response):
+
+    content_type = response.headers.get('content-type')
 
     # Get JSON
-    if 'application/json' in response.headers.get('content-type'):
-        return parseJSON(response)
+    if 'application/json' in content_type:
+        return {'Success': f'Content-type: application/json'}
 
     # Get JSON from CSV
     if 'text/csv' in response.headers.get('content-type'):
-        return parseCSV(response)
+        return {'Success': f'Content-type: text/csv'}
+        
 
     # Any other content type    
-    try:
-        content_type = response.headers.get('content-type')
-        return {'Error': f'Wrong content-type: {content_type}'}
-    except:
-        return {'Error': 'Wrong content-type'}
+    return {'Error': 'Invalid content-type'}
 
-def parseJSON(response):
+def parse_json(response):
     try:
         response_json = response.json()
     except:
         return {'Error': 'Content can not be parsed to JSON'}
     return response_json
 
-def parseCSV(response):
+def parse_csv(response):
     try:
         # Decode 
         decoded_content = response.content.decode('utf-8')
@@ -72,10 +116,15 @@ def parseCSV(response):
                 dict_row.update(key_value)
             json_list.append(dict_row)
 
+        # If no data was captured, then parsing failed
+        if len(json_list) == 0:
+            return {'Error': 'Content can not be parsed to JSON from CSV'}
+
         # Create dict that we return
         json_dict = {}
         json_dict['data'] = json_list
         return json_dict
 
+    # If parsing failed for some unforseen error
     except:
         return {'Error': 'Content can not be parsed to JSON from CSV'}
