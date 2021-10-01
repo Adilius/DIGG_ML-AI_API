@@ -35,3 +35,4 @@ typing-extensions==3.10.0.2
 urllib3==1.26.6
 uvicorn==0.15.0
 validators==0.18.2
+requests-mock==1.9.3

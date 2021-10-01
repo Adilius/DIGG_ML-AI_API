@@ -16,7 +16,8 @@ async def root(url: str):
     print('Incoming url request')
     print(f'url = {url}')
 
-    response = data_handler.validateURL(url)
+    # Run checks
+    response = data_handler.get_data(url)
 
     #If we got error
     if next(iter(response)) == 'Error':
@@ -31,7 +32,7 @@ async def root(url: str):
 async def root(url: str):
     print('Incoming eval request')
     print(f'url = {url}')
-    response = data_handler.validateURL(url)
+    response = data_handler.get_data(url)
 
     #If we got error
     if next(iter(response)) == 'Error':
