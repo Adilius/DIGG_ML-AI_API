@@ -31,11 +31,11 @@ class TestDatabase(unittest.TestCase):
 
         with requests_mock.Mocker() as rm:
             rm.post(
-                'http://db_service:8003/add_data/', 
+                'http://add_data/', 
                 json=return_value, 
                 status_code=201)
             response = requests.post(
-                'http://db_service:8003/add_data/',
+                'http://add_data/',
                 headers=headers, 
                 data=return_value)
 
