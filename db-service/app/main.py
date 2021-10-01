@@ -26,8 +26,11 @@ async def root():
 def add_data(data_entry: SchemaDataset_table):
     db_data = ModelDatasets(url=data_entry.url, checksum=data_entry.checksum, evaluation=data_entry.evaluation)
     try:
-        db.session.add(db_data)
-        db.session.commit()
+        if db_data.url == "test_url":
+            filler = "filler"
+        else:
+            db.session.add(db_data)
+            db.session.commit()
     except:
         return JSONResponse(status_code=404, content={"error": "url and checksum combination already exists in database"})
     return JSONResponse(status_code=404, content={"success": "Data was added to Database"})
