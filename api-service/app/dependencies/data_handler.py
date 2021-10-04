@@ -122,7 +122,7 @@ def parse_csv(response):
 
         # Create dict that we return
         json_dict = {}
-        json_dict['data'] = json_list
+        json_dict['results'] = json_list
         return json_dict
 
     # If parsing failed for some unforseen error
