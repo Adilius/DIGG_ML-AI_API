@@ -1,3 +1,4 @@
+from logging import NullHandler
 import os
 from starlette.responses import JSONResponse
 
@@ -33,7 +34,7 @@ def add_data(data_entry: SchemaDataset_table):
             db.session.commit()
     except:
         return JSONResponse(status_code=404, content={"error": "url and checksum combination already exists in database"})
-    return JSONResponse(status_code=404, content={"success": "Data was added to Database"})
+    return JSONResponse(status_code=200, content={"success": "Data was added to Database"})
 
 @app.put("/update/", responses={404: {"model": Message}})
 def update_data(url: str, checksum: str, evaluation: str):
@@ -46,7 +47,7 @@ def update_data(url: str, checksum: str, evaluation: str):
         db.session.commit()
     except:
         return JSONResponse(status_code=404, content={"error": "Data could not be updated for some reason"})
-    return JSONResponse(status_code=404, content={"success": "Data was updated"})
+    return JSONResponse(status_code=200, content={"success": "Data was updated"})
 
 @app.delete("/delete/", responses={404: {"model": Message}})
 def delete_book(url: str, checksum: str):
@@ -60,21 +61,24 @@ def delete_book(url: str, checksum: str):
         return JSONResponse(status_code=404, content={"error": "Data could not be deleted for some reason"})
     return JSONResponse(status_code=200, content={"success": "Data was deleted"})
 
-@app.get("/get_data/", response_model = evaluation_model)
+@app.get("/get_data/", response_model = evaluation_model, responses={404: {"model": Message}})
 def get_data(url: str, checksum: str):
     query = db.session.query(Datasets).filter(
-        Datasets.url == url,
-        Datasets.checksum == checksum
-    ).first()
+            Datasets.url == url,
+            Datasets.checksum == checksum
+            ).first()   
+    if query != None:
+        return query
+    else:
+        return JSONResponse(status_code=404, content={"error": "Data could not be retrieved"})
 
-    return query
-
-
-@app.get("/get_all_data/")
+@app.get("/get_all_data/", responses={404: {"model": Message}})
 def get_all_data():
     StoredData = db.session.query(Datasets).all()
-
-    return StoredData
+    if len(StoredData) >= 1:
+        return StoredData
+    else:
+        return JSONResponse(status_code=404, content={"error": "Data could not be retrieved"})
 
 
 if __name__ == "__main__":
