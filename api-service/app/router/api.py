@@ -44,16 +44,20 @@ async def root(url: str):
     # Check database first
     try:
         response = database_handler.get_result(url, checksum)
+        print('Retrieved stored results')
         return response
     except:
-        print('No stored result found')
+        print('No stored results found')
 
     # Get evaluation
+    print('Creating new evaluation...')
     evaluation = main.evaluate_dataset(response)
 
     # Store in database
     try:
         response = database_handler.store_result(url, checksum, evaluation)
+        print(response)
+        print('Successfully posted results to database')
     except:
         print('Failed to post result to database')
 

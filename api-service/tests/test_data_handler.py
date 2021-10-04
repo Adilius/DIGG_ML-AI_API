@@ -79,7 +79,7 @@ def test_parse_json(test_app):
     }
 
     # Valid JSON data
-    r_valid = Response()
+    r_valid = requests.Response()
     r_valid._content = b'{ "hello" : "world" }'
     response = data_handler.parse_json(r_valid)
     assert response == {
@@ -101,7 +101,7 @@ def test_parse_csv(test_app):
     r_valid._content = b'1,2,3\n1,2,3'
     response = data_handler.parse_csv(r_valid)
     assert response == {
-        'data': [
+        'results': [
             {
             '1':'1',
             '2':'2',

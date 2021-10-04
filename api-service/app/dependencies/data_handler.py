@@ -19,7 +19,6 @@ def get_data(url:str):
         return status
 
     validated_response = validate_response(response)
-    print(validated_response)
 
     #If we got error
     if next(iter(validated_response)) == 'Error':
@@ -68,23 +67,24 @@ def request_url(url: str):
             {'Error': f'Status code: {response.status_code}'},
             None)
 
-
+# Validates our response
 def validate_response(response):
 
     content_type = response.headers.get('content-type')
 
     # Get JSON
     if 'application/json' in content_type:
-        return {'Success': f'Content-type: application/json'}
+        return {'Success': 'Content-type: application/json'}
 
     # Get JSON from CSV
     if 'text/csv' in response.headers.get('content-type'):
-        return {'Success': f'Content-type: text/csv'}
+        return {'Success': 'Content-type: text/csv'}
         
 
     # Any other content type    
     return {'Error': 'Invalid content-type'}
 
+# Parse response from JSON
 def parse_json(response):
     try:
         response_json = response.json()
@@ -92,6 +92,7 @@ def parse_json(response):
         return {'Error': 'Content can not be parsed to JSON'}
     return response_json
 
+# Parse response from CSV
 def parse_csv(response):
     try:
         # Decode 
