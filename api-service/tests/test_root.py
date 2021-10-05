@@ -6,3 +6,9 @@ def test_root(test_app):
     assert response.json() == {
         "Success": "Hello World!"
     }
+    
+def test_url(test_app):
+    pass
+ 
+def test_eval(test_app):
+    pass
