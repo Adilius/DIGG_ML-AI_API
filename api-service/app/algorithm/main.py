@@ -1,7 +1,7 @@
 import requests
 import json
 import time
-from .evaluation_methods import evaluate, getInstanceAmount, getAttributeAmount, getEmptyValueAmount, getOutlierAmount, getDuplicateAmount, getMixedTypeAmount, clearGlobals
+from .evaluation_methods import evaluate, getInstanceAmount, getAttributeAmount, getAttributes, getEmptyValueAmount, getOutlierAmount, getDuplicateAmount, getMixedTypeAmount, clearGlobals
 
 def evaluate_dataset(dataset: dict):
 
@@ -14,6 +14,7 @@ def evaluate_dataset(dataset: dict):
     response = {
         'Number of instances': getInstanceAmount(),
         'Number of attributes': getAttributeAmount(),
+        'Attributes': getAttributes(),
         'Missing values': getEmptyValueAmount(),
         'Outliers': getOutlierAmount(),
         'Duplicate instances': getDuplicateAmount(),

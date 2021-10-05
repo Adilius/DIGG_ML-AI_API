@@ -140,6 +140,17 @@ def getAttributeAmount():
     global attributeList
     return len(attributeList)
 
+#Returs string containing all attributes
+def getAttributes():
+    global attributeList
+    attributeString = '[ '
+
+    for attribute in attributeList:
+        attributeString += attribute + ', '
+    
+    attributeString = attributeString[:-2] + ' ]'
+    return attributeString
+
 #Returns amount of empty fields
 def getEmptyValueAmount():
     emptyAmount = 0
