@@ -140,21 +140,64 @@ def getAttributeAmount():
     global attributeList
     return len(attributeList)
 
+#Returs string containing all attributes
+def getAttributes():
+    global attributeList
+    attributeString = '[ '
+
+    for attribute in attributeList:
+        attributeString += attribute + ', '
+    
+    attributeString = attributeString[:-2] + ' ]'
+    return attributeString
+
+#Returns amount of values
+def getValueAmount():
+    global dataList
+    global attributeList
+    valueAmount = 0
+
+    for value in dataList:
+        valueCheck = False
+        for attribute in attributeList:
+            if value[0] == attribute:
+                valueCheck = True
+        if valueCheck == True:
+            valueAmount+=1
+
+    return valueAmount
+
 #Returns amount of empty fields
 def getEmptyValueAmount():
+    global dataList
     emptyAmount = 0
+
     for value in dataList:
         if value[2] == "":
             emptyAmount+=1
+
     return emptyAmount
+
+#Returns amount of numeric values
+def getNumericValueAmount():
+    global numericList
+    global attributeList
+    numericAmount = 0
+
+    for value in numericList:
+        valueCheck = False
+        for attribute in attributeList:
+            if value[0] == attribute:
+                valueCheck = True
+        if valueCheck == True:
+            numericAmount+=1
+
+    return numericAmount
 
 #Returns amount of outliers
 def getOutlierAmount():
     global outlierAmount
-    global numericList
-
-    outlierAmountString = str(outlierAmount) + '/' + str(len(numericList))
-    return outlierAmountString
+    return outlierAmount
 
 #Returns amount of duplicates
 def getDuplicateAmount():
