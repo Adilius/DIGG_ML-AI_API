@@ -1,44 +1,50 @@
-import requests_mock
 import unittest
+from unittest import mock
 import json
 
-from app.dependencies.database_handler import store_result
+import requests
+from requests.models import Response
+from app.dependencies import database_handler
 
-class TestDatabase(unittest.TestCase):
+def test_get_result(test_app):
 
-    @classmethod
-    def setUpClass(cls):
-        cls.url = "string"
-        cls.checksum = "string"
-        cls.evaluation = "string"
+    # Check no return
+    with mock.patch('requests.get') as mock_get:
+        mock_get.return_value.text = 'no_return'
+        no_return = database_handler.get_result('no_return','no_return')
 
-    def test_store_result_success(self):
-        
-        return_value = {
-            'url': self.url,
-            'checksum': self.checksum,
-            'evaluation': self.evaluation
+    assert no_return == {
+        'Error':'Could not read result from database'
         }
 
-        test_response_payload = {
-            'url': self.url,
-            'checksum': self.checksum,
-            'evaluation': self.evaluation
+    # Check wrong return
+    with mock.patch('requests.get') as mock_get:
+        mock_get.return_value.text = '{"evaluation":"Hello World"}'
+        wrong_return = database_handler.get_result('wrong_return','wrong_return')
+
+    assert wrong_return == {
+        'Error':'Could not read evaluation from result'
         }
 
-        with requests_mock.Mocker() as rm:
-            rm.post(
-                'http://db_service:8003/add_data/', 
-                json=return_value, 
-                status_code=201)
-            response = store_result(
-                self.url, self.checksum, self.evaluation
-            )
+    # Check valid return
+    with mock.patch('requests.get') as mock_get:
+        mock_get.return_value.text = '{"evaluation":\'{"Hello" : "World"}\'}'
+        valid_return = database_handler.get_result('valid_return','')
 
-            data_json = json.dumps(test_response_payload)
+    assert valid_return == {
+        "Hello": "World"
+    }
 
-            self.assertEqual(
-                response, 
-                data_json, 
-                'Failed to post result to database')
-        
+
+def test_store_result(test_app):
+    with mock.patch('requests.post') as mock_get:
+        mock_get.return_value.text = 'test'
+        test = database_handler.store_result('test','test','test')
+        assert test == 'test'
+
+
+def test_get_all_results(test_app):
+    with mock.patch('requests.get') as mock_get:
+        mock_get.return_value.text = 'test'
+        test = database_handler.get_all_results()
+        assert test == 'test'

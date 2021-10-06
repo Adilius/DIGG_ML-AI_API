@@ -12,15 +12,16 @@ async def root():
     return {"Success": "Hello World!"}
 
 @api_router.get("/url/")
-async def root(url: str):
+async def url(url: str):
     print('Incoming url request')
     print(f'url = {url}')
 
     # Run checks
     response = data_handler.get_data(url)
 
+    print('response', response)
     #If we got error
-    if next(iter(response)) == 'Error':
+    if 'Error' in response:
         return response
     else:
         return {
@@ -29,7 +30,7 @@ async def root(url: str):
 
 
 @api_router.get("/eval/")
-async def root(url: str):
+async def eval(url: str):
     print('Incoming eval request')
     print(f'url = {url}')
     response = data_handler.get_data(url)
@@ -44,16 +45,20 @@ async def root(url: str):
     # Check database first
     try:
         response = database_handler.get_result(url, checksum)
+        print('Retrieved stored results')
         return response
     except:
-        print('No stored result found')
+        print('No stored results found')
 
     # Get evaluation
+    print('Creating new evaluation...')
     evaluation = main.evaluate_dataset(response)
 
     # Store in database
     try:
         response = database_handler.store_result(url, checksum, evaluation)
+        print(response)
+        print('Successfully posted results to database')
     except:
         print('Failed to post result to database')
 
