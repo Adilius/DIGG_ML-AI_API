@@ -61,7 +61,7 @@ def get_result(url: str, checksum: str):
         evaluation_dict =  ast.literal_eval(response_dict['evaluation'])
     except:
         return {
-            'Error':'No such result in database'
+            'Error':'Could not read evaluation from result'
         }
 
     
