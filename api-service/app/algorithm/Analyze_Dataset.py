@@ -7,14 +7,11 @@
 import pandas as pd
 # Using Skicit-learn to split data into training and testing sets
 from sklearn.model_selection import train_test_split  # Import train_test_split function
-from sklearn.tree import DecisionTreeClassifier
 from sklearn import preprocessing
 from sklearn import metrics #Import scikit-learn metrics module for accuracy calculation
 import pandas as pd
 import read_dataset as rd
 from ML_Algorithms import Decision_Tree_Classifier as dtc
-from ML_Algorithms import Naive_Bayes as nb
-from ML_Algorithms import KNN_Classifier as knn
 from ML_Algorithms import Random_Forest_Classifier as rfc
 
 # Read in a dataset
@@ -59,14 +56,6 @@ def Analyse_Dataset(df, columns, ml_evaluator):
 print("\n\n\n")
 print("*** Decision Tree Classifier Algorithm ***")
 Analyse_Dataset(df, columns, dtc.Decision_Tree_Classifier)
-
-print("\n\n\n")
-print("*** Naive Bayes Algorithm ***")
-Analyse_Dataset(df, columns, nb.Naive_Bayes)
-
-print("\n\n\n")
-print("*** KNN Classifier Algorithm ***")
-Analyse_Dataset(df, columns, knn.KNN_Classifier)
 
 print("\n\n\n")
 print("*** Random Forest Algorithm ***")
