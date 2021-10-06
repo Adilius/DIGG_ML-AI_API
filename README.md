@@ -30,15 +30,43 @@ Dataset test url: http://localhost:8080/api/url/?url=https://opendata.umea.se/ap
 # Project structure
 
 ```
-├── api-service             # Directory for API service container
-│   ├── Dockerfile          # Dockerfile for API service container
-│   ├── requirements.txt    # Requirements for Python modules used by container
-│   └── app                 # Directory containing all application logic
-│       ├── __init__.py     # Initialize module 
-│       ├── main.py         # Starts FastAPI server
-│       └── router          # Contains logic for /api/ routes
-│           ├── __init__.py # Initialize module
-│           └── api.py      # Handles /api/ routes
+├── api-service                         # Directory for API service container
+│   ├── Dockerfile                      # Dockerfile for API service container
+│   ├── requirements.txt                # Requirements for Python modules used by container
+│   │
+│   └── app                             # Directory containing all application logic
+│       ├── __init__.py                 # Initialize module 
+│       ├── main.py                     # Starts FastAPI server
+│       └── router                      # Contains logic for /api/ routes
+│           ├── __init__.py             # Initialize module
+│           └── api.py                  # Handles /api/ routes
+│
+├── db-service                          # Directory for database service container
+│   ├── Dockerfile                      # Dockerfile for database service container
+│   ├── requirements.txt                # Requirements for Python modules used by container
+│   │
+│   ├── alembic                         # Directory containing logic for creating database structure
+│   │   ├── versions                    # Directory containing most recent database structure
+│   │   │   └── new_migration.py        # Conversion file from python class to database tables
+│   │   ├── env.py                      # Envionment file for alembic and access to database
+│   │   ├── README                      # Alembic explained
+│   │   └── script.py.mako              # Updates migrationfiles when needed
+│   ├── models.py                       # Database structure defined by python class
+│   ├── alembic.ini                     # Initialize alembic conversion from models.py
+│   │                                   
+│   ├── schema.py                       # Defines response format for database api
+│   ├── app                             # Directory containing all database api logic
+│   │   └── main.py                     # Database api logic for handling database data
+│   │
+│   └── tests                           # Directory containing all database testing
+│       ├── __init__.py                 # Initialize module
+│       ├── conftest.py                 # Runs the tests
+│       ├── test_database_add_data.py   # Test validation on database Posting
+│       └── test_database_root.py       # Checking if database is running
+│
+├── docker-compose.yml                  # Creates all docker containers
+├── nginx_config.conf                   # Config file for Nginx 
+├── README.md                           # This file
 ```
 
 # Useful git commands
@@ -54,7 +82,11 @@ Push local changes to Github: `git push`
 
 Create new branch: `git checkout -b branchname`
 
-Push new branch to Github: 'git push origin branchname`
+Push new branch to Github: `git push origin branchname`
+ 
+delete branch locally: `git branch -d localBranchName`
+
+delete branch remotely: `git push origin --delete remoteBranchName`
 
 # DB commands
 Create new migration from models.py: `docker-compose run db_service alembic revision --autogenerate -m "New Migration"`
@@ -85,9 +117,3 @@ Create server manually (for now):
         Username: postgres
 
         Password: password
-
-Push new branch to Github: `git push origin branchname`
- 
-delete branch locally: `git branch -d localBranchName`
-
-delete branch remotely: `git push origin --delete remoteBranchName`

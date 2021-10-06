@@ -5,8 +5,6 @@ from sqlalchemy.sql import func
 
 Base = declarative_base()
 
-#TEST TABLES THAT WILL BE REPLACED BY DYNAMIC CLASS GENERATION
-
 class Datasets(Base):
     __tablename__ = "dataset_table"
     checksum = Column(String, primary_key=True)
