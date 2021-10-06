@@ -1,4 +1,5 @@
 import pandas as pd
+import requests
 import json
 
 #   Date      : 2021-09-28
@@ -21,5 +22,16 @@ def read_dataset():
 
     if file.lower().endswith('.json'):
         data = json.load(file)
-        df = pd.DataFrame.from_dict(data)
-        return df
+        check = 0
+        if type(data) == dict:
+            for k in data.keys(): #check for the keys
+               s = str(k) #convert content to string
+               print(type(data[s])) #check if it is a string the data
+               if type(data[s]) == list: #check if its a list wich means it is the "data" to analice
+                  if data[s]== "results":
+                     check = 1
+        if check ==1:
+            return 1
+        else:
+            print("NO DATA FOUND LABELED AS 'RESULTS' PLEASE CHECK AGAIN/FIX THE ISSUE")
+            return 0
