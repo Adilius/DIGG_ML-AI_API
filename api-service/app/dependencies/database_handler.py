@@ -44,9 +44,11 @@ def get_result(url: str, checksum: str):
         headers=headers, 
         params=payload)
 
-    print(f'response')
-    print(response.text)
-    print(type(response.text))
+    print(f'response: {response.text}')
+
+    if response.text == "null":
+        #raise Exception('No data')
+        pass
 
     # Convert response to dictionary
     try:

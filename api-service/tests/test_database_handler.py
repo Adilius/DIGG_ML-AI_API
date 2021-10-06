@@ -37,13 +37,14 @@ def test_get_result(test_app):
 
 
 def test_store_result(test_app):
-    # Check no return
     with mock.patch('requests.post') as mock_get:
-        mock_get.return_value.text = 'no_return'
-        no_return = database_handler.get_result('no_return','no_return')
+        mock_get.return_value.text = 'test'
+        test = database_handler.store_result('test','test','test')
+        assert test == 'test'
 
-
-    pass
 
 def test_get_all_results(test_app):
-    pass
+    with mock.patch('requests.get') as mock_get:
+        mock_get.return_value.text = 'test'
+        test = database_handler.get_all_results()
+        assert test == 'test'
