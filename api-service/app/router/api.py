@@ -36,7 +36,7 @@ async def eval(url: str):
     response = data_handler.get_data(url)
 
     #If we got error
-    if next(iter(response)) == 'Error':
+    if 'Error' in response:
         return response
 
     # Get the checksum
