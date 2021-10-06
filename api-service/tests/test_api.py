@@ -7,15 +7,14 @@ import json
 import requests
 from app.router import api
 
-def test_root(test_app):
-    response = test_app.get('api/')
-    assert response.status_code == 200
-    assert response.headers.get('content-type') == "application/json"
-    assert response.json() == {
-        "Success": "Hello World!"
-    }
+class test_root(IsolatedAsyncioTestCase):    
+    async def test_root(test_app):
+        response = await api.root()
+        assert response == {
+            "Success": "Hello World!"
+        }
     
-class Test(IsolatedAsyncioTestCase):
+class test_url(IsolatedAsyncioTestCase):
     async def test_url(test_app):
 
         # Test valid request
@@ -64,5 +63,11 @@ class Test(IsolatedAsyncioTestCase):
             #TODO
             pass
  
-def test_eval(test_app):
-    pass
+class test_eval(IsolatedAsyncioTestCase):    
+    async def test_eval(test_app):
+        #TODO
+        pass
+        # Test invalid request
+#        with mock.patch('data_handler.get_data') as mock_get:
+#            valid_return = await api.eval("")
+#            assert valid_return == {"Success": "URL valid"}
