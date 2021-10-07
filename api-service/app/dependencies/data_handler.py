@@ -2,6 +2,7 @@ import validators
 import requests
 import json
 import csv
+import time
 
 # Call this from api
 def get_data(url:str):
@@ -46,16 +47,25 @@ def validate_url(url: str):
     else:
         return {'Error':'URL invalid'}
 
+# Don't touch anything in this function, very fragile
 # Make HTTP GET request to URL
 def request_url(url: str):
-
+    start = time.time()
+    timeout = 30    # Max allowed time for upstream request
     # Try to get resource from url
     try:
-        response = requests.get(url)
-    except:
-        return (
-            { 'Error':'Failed to send request to url'},
-            None)
+        response = requests.get(url, stream=True)
+        response.raise_for_status()
+        new_content = ""
+        for chunk in response.iter_content(1024, decode_unicode=True):
+            new_content += chunk
+            if time.time() - start > timeout:
+                raise ValueError('timeout reached')
+        response._content = str.encode(new_content)
+    except ValueError:
+        return ({
+                'Error': 'Request to fetch resource timed out'
+                }, None)
 
     # Check if we got succesful response
     if response.ok:

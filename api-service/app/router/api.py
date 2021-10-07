@@ -43,12 +43,15 @@ async def eval(url: str):
     checksum = checksum_handler.get_checksum(response)
 
     # Check database first
-    try:
-        response = database_handler.get_result(url, checksum)
-        print('Retrieved stored results')
-        return response
-    except:
+    database_response = database_handler.get_result(url, checksum)
+
+    if 'Error' in database_response:
+        print(database_response)
         print('No stored results found')
+    else:
+        print('Retrieved stored results')
+        return database_response
+        
 
     # Get evaluation
     print('Creating new evaluation...')
