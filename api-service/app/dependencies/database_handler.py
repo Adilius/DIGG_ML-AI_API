@@ -39,16 +39,22 @@ def get_result(url: str, checksum: str):
         "checksum" : checksum
     }
 
-    response = requests.get(
-        'http://db_service:8003/get_data/',
-        headers=headers, 
-        params=payload)
+    try:
+        response = requests.get(
+            'http://db_service:8003/get_data/',
+            headers=headers, 
+            params=payload)
+    except:
+        return {
+            'Error':'Failed to get from database'
+        }
 
     print(f'response: {response.text}')
 
-    if response.text == "null":
-        #raise Exception('No data')
-        pass
+    if any(substr in response.text for substr in ['Error','error']):
+        return {
+            'Error':'No data in database'
+        }
 
     # Convert response to dictionary
     try:
