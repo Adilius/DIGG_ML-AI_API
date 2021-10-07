@@ -26,6 +26,13 @@ def mocked_requests_get(*args, **kwargs):
             self.status_code = status_code
             self.ok = ok
 
+        def raise_for_status(self):
+            return None
+
+        def iter_content(self, *args, **kwargs):
+            return ["hello", "world"]
+
+
     if args[0] == '200':
         return MockResponse(200, True)
     elif args[0] == '404':

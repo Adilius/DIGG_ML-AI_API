@@ -8,22 +8,31 @@ from app.dependencies import database_handler
 
 def test_get_result(test_app):
 
-    # Check no return
+    # Check no data return
     with mock.patch('requests.get') as mock_get:
-        mock_get.return_value.text = 'no_return'
+        mock_get.return_value.text = 'Error'
         no_return = database_handler.get_result('no_return','no_return')
 
     assert no_return == {
-        'Error':'Could not read result from database'
+        'Error':'No data in database'
         }
 
-    # Check wrong return
+    # Check wrong response return
     with mock.patch('requests.get') as mock_get:
-        mock_get.return_value.text = '{"evaluation":"Hello World"}'
+        mock_get.return_value.text = '{"evaluation":Hello World}'
         wrong_return = database_handler.get_result('wrong_return','wrong_return')
 
     assert wrong_return == {
-        'Error':'Could not read evaluation from result'
+         'Error':'Could not read result from database'
+        }
+
+    # Check wrong response return
+    with mock.patch('requests.get') as mock_get:
+        mock_get.return_value.text = '{"evaluation":\'{"Hello" : World}\'}'
+        wrong_return = database_handler.get_result('wrong_return','wrong_return')
+
+    assert wrong_return == {
+         'Error':'Could not read evaluation from result'
         }
 
     # Check valid return
