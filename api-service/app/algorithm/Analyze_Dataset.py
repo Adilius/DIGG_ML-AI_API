@@ -10,24 +10,51 @@ from sklearn.model_selection import train_test_split  # Import train_test_split 
 from sklearn import preprocessing
 from sklearn import metrics #Import scikit-learn metrics module for accuracy calculation
 import pandas as pd
-import read_dataset as rd
 from ML_Algorithms import Decision_Tree_Classifier as dtc
 from ML_Algorithms import Random_Forest_Classifier as rfc
 
-# Read in a dataset
-df = rd.read_dataset()
 
-print(df.head())
+def Get_A_List_Of_ML_Analysis(df, ml_evaluator):
 
-columns = []
+    columns = []
 
-# Save all columns/labels in a list
-for col in df.columns:
-    columns.append(col)
+    # Save all columns/labels in a list
+    for col in df.columns:
+        columns.append(col)
+
+    le = preprocessing.LabelEncoder()
+    df = df.apply(le.fit_transform)
+
+    num = len(columns)
+    i = 0
+    feature_cols = []
+
+    list_of_accuracies = []
+
+    while i < num:
+        for val in columns:
+            feature_cols.append(val)
+
+        cur_column = columns[i]
+        feature_cols.pop(i)
+        
+        list_of_accuracies.append(ml_evaluator(df, columns, feature_cols, cur_column, i))
+
+        feature_cols = []
+
+        i += 1
+
+    return list_of_accuracies
 
 # This function will analyse a dataset based on every column/label in the dataset
 # Any of the ML-algorithms in this project should work
-def Analyse_Dataset(df, columns, ml_evaluator):
+def Analyse_Dataset(df, ml_evaluator):
+
+    columns = []
+
+    # Save all columns/labels in a list
+    for col in df.columns:
+        columns.append(col)
 
     #Pre-process the data. 
     le = preprocessing.LabelEncoder()
@@ -51,14 +78,5 @@ def Analyse_Dataset(df, columns, ml_evaluator):
         feature_cols = []
 
         i += 1
-
-
-print("\n\n\n")
-print("*** Decision Tree Classifier Algorithm ***")
-Analyse_Dataset(df, columns, dtc.Decision_Tree_Classifier)
-
-print("\n\n\n")
-print("*** Random Forest Algorithm ***")
-Analyse_Dataset(df, columns, rfc.Random_Forest_Classifier)
 
 
