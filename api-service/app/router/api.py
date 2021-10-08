@@ -55,7 +55,13 @@ async def eval(url: str):
 
     # Get evaluation
     print('Creating new evaluation...')
-    evaluation = main.evaluate_dataset(response)
+    try:
+        evaluation = main.evaluate_dataset(response)
+    except:
+        print('Evaluation failed')
+        return {
+            'Error':'Evaluation failed'
+        }
 
     # Store in database
     try:
