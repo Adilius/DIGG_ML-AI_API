@@ -19,7 +19,7 @@ async def url(url: str):
     # Run checks
     response = data_handler.get_data(url)
 
-    print('response', response)
+    #print('response', response)
     #If we got error
     if 'Error' in response:
         return response
