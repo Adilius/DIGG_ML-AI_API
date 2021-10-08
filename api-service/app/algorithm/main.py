@@ -1,7 +1,7 @@
 import requests
 import json
 import time
-from .evaluation_methods import InstanceResult, AttributeResult, EmptyResult, OutlierResult, ClearGlobals
+from .evaluation_methods import evaluate, getInstanceAmount, getAttributeAmount, getAttributes, getValueAmount, getEmptyValueAmount, getNumericValueAmount, getOutlierAmount, getDuplicateAmount, getMixedTypeAmount, clearGlobals
 
 def evaluate_dataset(dataset: dict):
 
@@ -9,22 +9,21 @@ def evaluate_dataset(dataset: dict):
 
     time.sleep(5)
 
+    evaluate(dataset)
+
     response = {
-        'Number of instances': InstanceResult(dataset),
-        'Number of attributes': AttributeResult(dataset),
-        'Missing values': EmptyResult(dataset),
-        'Outliers': OutlierResult(dataset),
+        'Instances': getInstanceAmount(),
+        'Attributes': getAttributeAmount(),
+        'Attribute names': getAttributes(),
+        'Values': getValueAmount(),
+        'Missing values': getEmptyValueAmount(),
+        'Numeric values': getNumericValueAmount(),
+        'Outliers': getOutlierAmount(),
+        'Duplicate instances': getDuplicateAmount(),
+        'Mixed datatypes': getMixedTypeAmount()
     }
 
-    ClearGlobals()
-
-    # dummy_response = {
-    #     'Number of instances': 30,
-    #     'Number of attributes': 30,
-    #     'Missing values': 37,
-    #     'Data Set Characteristics': 'Multivariate',
-
-    # }
+    clearGlobals()
     
     return response
 
@@ -34,12 +33,15 @@ def evaluate_dataset(dataset: dict):
 #     #No outliers: https://haninge.entryscape.net/rowstore/dataset/fb39ab31-dd4b-4414-bc5f-5af01b62a1fa/json?_limit=500
 #     #Has outliers: https://catalog.sodertalje.se/rowstore/dataset/ee44b6b8-ab8c-44dc-ab0c-f7acf9a5e20d/json?_limit=500
 
-#     apiLink = input("Paste link to API: ")
+#     #apiLink = input("Paste link to API: ")
+#     apiLink = "https://catalog.sodertalje.se/rowstore/dataset/ee44b6b8-ab8c-44dc-ab0c-f7acf9a5e20d/json?_limit=500"
 
 #     result = requests.get(apiLink)
 
 #     if result.status_code == 200:
-#         data = result.json()
+#         #data = result.json()
+#         f = open('api-service/app/algorithm/test.json')
+#         data = json.load(f)
 #         response = evaluate_dataset(data)
 #         print(response)
 #     else:

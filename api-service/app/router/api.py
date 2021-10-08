@@ -9,42 +9,65 @@ api_router = APIRouter()
 
 @api_router.get('/')
 async def root():
-    return {"message": "Hello World!"}
+    return {"Success": "Hello World!"}
 
 @api_router.get("/url/")
-async def root(url: str):
+async def url(url: str):
     print('Incoming url request')
     print(f'url = {url}')
-    response = data_handler.validateURL(url)
-    return response
+
+    # Run checks
+    response = data_handler.get_data(url)
+
+    print('response', response)
+    #If we got error
+    if 'Error' in response:
+        return response
+    else:
+        return {
+            "Success": "URL valid"
+        }
 
 
 @api_router.get("/eval/")
-async def root(url: str):
+async def eval(url: str):
     print('Incoming eval request')
     print(f'url = {url}')
-    response = data_handler.validateURL(url)
+    response = data_handler.get_data(url)
 
     #If we got error
-    if next(iter(response)) == 'Error':
+    if 'Error' in response:
         return response
 
     # Get the checksum
     checksum = checksum_handler.get_checksum(response)
 
     # Check database first
-    try:
-        response = database_handler.get_result(url, checksum)
-        return response
-    except:
-        print('No stored result found')
+    database_response = database_handler.get_result(url, checksum)
+
+    if 'Error' in database_response:
+        print(database_response)
+        print('No stored results found')
+    else:
+        print('Retrieved stored results')
+        return database_response
+        
 
     # Get evaluation
-    evaluation = main.evaluate_dataset(response)
+    print('Creating new evaluation...')
+    try:
+        evaluation = main.evaluate_dataset(response)
+    except:
+        print('Evaluation failed')
+        return {
+            'Error':'Evaluation failed'
+        }
 
     # Store in database
     try:
         response = database_handler.store_result(url, checksum, evaluation)
+        print(response)
+        print('Successfully posted results to database')
     except:
         print('Failed to post result to database')
 
