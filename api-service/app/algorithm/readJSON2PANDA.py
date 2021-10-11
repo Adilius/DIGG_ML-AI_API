@@ -10,6 +10,13 @@ import pandas as pd
 
 # returns JSON object as 
 # a dictionary
+def check_if_dict_has_keyword_named_results(dict_dataset):
+    if type(dict_dataset) == dict:
+        for k in dict_dataset.keys(): #check for the keys
+            s = str(k) #convert content to string
+            if s == "results":
+                dict_dataset = look_for_dicts(dict_dataset)
+    return dict_dataset
 
 def look_for_dicts(data):
     whereresults= ""
