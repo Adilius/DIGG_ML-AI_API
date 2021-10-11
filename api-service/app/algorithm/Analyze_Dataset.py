@@ -10,11 +10,19 @@ from sklearn.model_selection import train_test_split  # Import train_test_split 
 from sklearn import preprocessing
 from sklearn import metrics #Import scikit-learn metrics module for accuracy calculation
 import pandas as pd
-from ML_Algorithms import Decision_Tree_Classifier as dtc
-from ML_Algorithms import Random_Forest_Classifier as rfc
+from .ML_Algorithms import Decision_Tree_Classifier as dtc
+from .ML_Algorithms import Random_Forest_Classifier as rfc
+from .readJSON2PANDA import check_if_dict_has_keyword_named_results
 
 
-def Get_A_List_Of_ML_Analysis(df, ml_evaluator):
+def Get_A_List_Of_ML_Analysis(dict_dataset, ml_evaluator):
+
+    #check if dict has a keyword results
+    dict_dataset = check_if_dict_has_keyword_named_results(dict_dataset)
+
+    df = pd.DataFrame.from_dict(dict_dataset)
+
+    df = df.astype(str)
 
     columns = []
 
