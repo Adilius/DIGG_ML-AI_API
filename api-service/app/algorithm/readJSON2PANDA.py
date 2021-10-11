@@ -10,13 +10,6 @@ import pandas as pd
 
 # returns JSON object as 
 # a dictionary
-def check_if_dict_has_keyword_named_results(dict_dataset):
-    if type(dict_dataset) == dict:
-        for k in dict_dataset.keys(): #check for the keys
-            s = str(k) #convert content to string
-            if s == "results":
-                dict_dataset = look_for_dicts(dict_dataset)
-    return dict_dataset
 
 def look_for_dicts(data):
     whereresults= ""
@@ -24,7 +17,7 @@ def look_for_dicts(data):
     if type(data) == dict:
         for k in data.keys(): #check for the keys
             s = str(k) #convert content to string
-            print(type(data[s])) #check if it is a string the data
+            #print(type(data[s])) #check if it is a string the data
             if s == "next":
                 next = 1
             if type(data[s]) == list: #check if its a list wich means it is the "data" to analice
@@ -59,8 +52,8 @@ def look_for_dicts(data):
         datas=[superez, tempDF]
         superez = pd.concat(datas,ignore_index=True)
         counter= counter + 1
-        print(counter)
-        print(superez)
+        #print(counter)
+        #print(superez)
         #merge dataframes tempDF with superez
     
     #print(superez)
@@ -124,6 +117,8 @@ def look_for_dicts_from_api():
     df = pd.DataFrame()
     # example api from dataportal.se : https://konsumentverket.entryscape.net/rowstore/dataset/86ce5095-1641-4390-8987-bdc3c77625a7
     url = "https://konsumentverket.entryscape.net/rowstore/dataset/86ce5095-1641-4390-8987-bdc3c77625a7"
+    url=url+"?_limit=500"
+   # print(url)
     #url = input("enter url for API: ") #write url
     response = requests.get(url) #get if url correct
 
@@ -140,4 +135,4 @@ def look_for_dicts_from_api():
 def hello_world():
     return {"Hello":"world"}
 
-#look_for_dicts_from_api()
+look_for_dicts_from_api()
