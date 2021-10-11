@@ -21,5 +21,8 @@ jobs:
       - name: Test API
         run: docker-compose exec -T api_service pytest . -v
 
+      - name: Test DB
+        run: docker-compose exec db_service pytest . -v
+
       - name: Stop containers
         run: docker-compose down
