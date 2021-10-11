@@ -20,7 +20,7 @@ Open bash terminal in virtual enviroment: `docker exec -it api bash`
 
 # Run tests
 
-Run tests in api service (docker must be up and running): 'docker-compose exec api_service pytest . -v'
+Run tests in api service (docker must be up and running): `docker-compose exec api_service pytest . -v`
 
 # Access urls to docker
 
