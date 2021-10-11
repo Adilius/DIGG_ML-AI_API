@@ -58,7 +58,10 @@ def request_url(url: str):
         response.raise_for_status()
         new_content = ""
         for chunk in response.iter_content(1024, decode_unicode=True):
-            new_content += chunk
+            if type(chunk) == str:
+                new_content += chunk
+            elif type(chunk) == bytes:
+                new_content += chunk.decode()
             if time.time() - start > timeout:
                 raise ValueError('timeout reached')
         response._content = str.encode(new_content)
