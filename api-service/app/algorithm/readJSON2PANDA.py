@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 #Project created: 2021-09-13
 #Developer: Björn Norén
 
