@@ -16,7 +16,12 @@ def check_if_dict_has_keyword_named_results(data):
             s = str(k) #convert content to string
             #print(type(data[s])) #check if it is a string the data
             if s == "results":
-                look_for_dicts(data)
+                data["limit"] = 500
+                next = list(data["next"])
+                next[len(next) - 3] = "5" #Sets limit to 500
+                data["next"] = "".join(next)
+                df = look_for_dicts(data)
+                return df
 
 def look_for_dicts(data):
     whereresults= ""
