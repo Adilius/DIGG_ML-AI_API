@@ -1,30 +1,38 @@
 import requests
 import json
 import time
+import pandas as pd
+from .Analyze_Dataset import Get_A_List_Of_ML_Analysis, Get_Correlation_Classifier
+from .ML_Algorithms import Decision_Tree_Classifier as dtc
+from .ML_Algorithms import Random_Forest_Classifier as rfc
 from .evaluation_methods import evaluate, getInstanceAmount, getAttributeAmount, getAttributes, getValueAmount, getEmptyValueAmount, getNumericValueAmount, getOutlierAmount, getDuplicateAmount, getMixedTypeAmount, clearGlobals
 
 def evaluate_dataset(dataset: dict):
 
-    #Anropa funktioner här fär att skapa en dictionary som returneras
-
     time.sleep(5)
-
-    evaluate(dataset)
+    df = evaluate(dataset)
 
     response = {
-        'Instances': getInstanceAmount(),
-        'Attributes': getAttributeAmount(),
-        'Attribute names': getAttributes(),
-        'Values': getValueAmount(),
-        'Missing values': getEmptyValueAmount(),
-        'Numeric values': getNumericValueAmount(),
-        'Outliers': getOutlierAmount(),
-        'Duplicate instances': getDuplicateAmount(),
-        'Mixed datatypes': getMixedTypeAmount()
+        'Instances': getInstanceAmount(df),
+        'Attributes': getAttributeAmount(df),
+        'Attribute names': getAttributes(df),
+        'Values': getValueAmount(df),
+        'Decision Tree Classifier': Get_A_List_Of_ML_Analysis(dataset, dtc.get_DTC_statistical_analysis),
+        'Correlation Classifier' : Get_Correlation_Classifier(dataset)
     }
 
+    if getEmptyValueAmount(df) > 0:
+        response.update({'Missing values': getEmptyValueAmount(df)})
+    if getNumericValueAmount() > 0:
+        response.update({'Numeric values': getNumericValueAmount()})
+    if getOutlierAmount() > 0:
+        response.update({'Outliers': getOutlierAmount()})
+    if getDuplicateAmount(df) > 0:
+        response.update({'Duplicate instances': getDuplicateAmount(df)})
+    if getMixedTypeAmount(df) > 0:
+        response.update({'Mixed datatypes': getMixedTypeAmount(df)})
+
     clearGlobals()
-    
     return response
 
 #For direct testing (remove the '.' "from .evaluation_methods import ...")
@@ -39,9 +47,9 @@ def evaluate_dataset(dataset: dict):
 #     result = requests.get(apiLink)
 
 #     if result.status_code == 200:
-#         #data = result.json()
-#         f = open('api-service/app/algorithm/test.json')
-#         data = json.load(f)
+#         data = result.json()
+#         #f = open('api-service/app/algorithm/test.json')
+#         #data = json.load(f)
 #         response = evaluate_dataset(data)
 #         print(response)
 #     else:

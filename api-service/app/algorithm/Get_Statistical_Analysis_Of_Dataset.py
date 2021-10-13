@@ -14,8 +14,6 @@ from sklearn import metrics #Import scikit-learn metrics module for accuracy cal
 import pandas as pd
 import read_dataset as rd
 from ML_Algorithms import Decision_Tree_Classifier as dtc
-from ML_Algorithms import Naive_Bayes as nb
-from ML_Algorithms import KNN_Classifier as knn
 from ML_Algorithms import Random_Forest_Classifier as rfc
 import statistics
 
@@ -72,7 +70,5 @@ def Get_Statistical_Analysis_Of_Dataset(df, columns, ml_evaluator):
 
 
 Get_Statistical_Analysis_Of_Dataset(df, columns, dtc.get_DTC_statistical_analysis)
-Get_Statistical_Analysis_Of_Dataset(df, columns, nb.get_NB_statistical_analysis)
-Get_Statistical_Analysis_Of_Dataset(df, columns, knn.get_KNN_statistical_analysis)
 Get_Statistical_Analysis_Of_Dataset(df, columns, rfc.get_RFC_statistical_analysis)
     

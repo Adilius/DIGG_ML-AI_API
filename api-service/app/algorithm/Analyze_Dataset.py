@@ -7,30 +7,63 @@
 import pandas as pd
 # Using Skicit-learn to split data into training and testing sets
 from sklearn.model_selection import train_test_split  # Import train_test_split function
-from sklearn.tree import DecisionTreeClassifier
 from sklearn import preprocessing
 from sklearn import metrics #Import scikit-learn metrics module for accuracy calculation
 import pandas as pd
-import read_dataset as rd
-from ML_Algorithms import Decision_Tree_Classifier as dtc
-from ML_Algorithms import Naive_Bayes as nb
-from ML_Algorithms import KNN_Classifier as knn
-from ML_Algorithms import Random_Forest_Classifier as rfc
+from .ML_Algorithms import Decision_Tree_Classifier as dtc
+from .ML_Algorithms import Random_Forest_Classifier as rfc
+from .ML_Algorithms import Correlation_Classifier as cc
+from .readJSON2PANDA import check_if_dict_has_keyword_named_results
 
-# Read in a dataset
-df = rd.read_dataset()
 
-print(df.head())
+def Get_A_List_Of_ML_Analysis(dict_dataset, ml_evaluator):
 
-columns = []
+    #check if dict has a keyword results
+    dict_dataset = check_if_dict_has_keyword_named_results(dict_dataset)
 
-# Save all columns/labels in a list
-for col in df.columns:
-    columns.append(col)
+    df = pd.DataFrame.from_dict(dict_dataset)
+
+    df = df.astype(str)
+
+    columns = []
+
+    # Save all columns/labels in a list
+    for col in df.columns:
+        columns.append(col)
+
+    le = preprocessing.LabelEncoder()
+    df = df.apply(le.fit_transform)
+
+    num = len(columns)
+    i = 0
+    feature_cols = []
+
+    list_of_accuracies = []
+
+    while i < num:
+        for val in columns:
+            feature_cols.append(val)
+
+        cur_column = columns[i]
+        feature_cols.pop(i)
+        
+        list_of_accuracies.append(ml_evaluator(df, columns, feature_cols, cur_column, i))
+
+        feature_cols = []
+
+        i += 1
+
+    return list_of_accuracies
 
 # This function will analyse a dataset based on every column/label in the dataset
 # Any of the ML-algorithms in this project should work
-def Analyse_Dataset(df, columns, ml_evaluator):
+def Analyse_Dataset(df, ml_evaluator):
+
+    columns = []
+
+    # Save all columns/labels in a list
+    for col in df.columns:
+        columns.append(col)
 
     #Pre-process the data. 
     le = preprocessing.LabelEncoder()
@@ -56,20 +89,17 @@ def Analyse_Dataset(df, columns, ml_evaluator):
         i += 1
 
 
-print("\n\n\n")
-print("*** Decision Tree Classifier Algorithm ***")
-Analyse_Dataset(df, columns, dtc.Decision_Tree_Classifier)
+def Get_Correlation_Classifier(dict_dataset):
 
-print("\n\n\n")
-print("*** Naive Bayes Algorithm ***")
-Analyse_Dataset(df, columns, nb.Naive_Bayes)
+    #check if dict has a keyword results
+    df = check_if_dict_has_keyword_named_results(dict_dataset)
 
-print("\n\n\n")
-print("*** KNN Classifier Algorithm ***")
-Analyse_Dataset(df, columns, knn.KNN_Classifier)
+    df = df.astype(str)
 
-print("\n\n\n")
-print("*** Random Forest Algorithm ***")
-Analyse_Dataset(df, columns, rfc.Random_Forest_Classifier)
+    le = preprocessing.LabelEncoder()
+    df = df.apply(le.fit_transform) 
+
+    correlation_matrix = cc.Correlation_Classifier(df)
+    return correlation_matrix
 
 
