@@ -1,6 +1,7 @@
 import requests
 import json
 import time
+import pandas as pd
 from .evaluation_methods import evaluate, getInstanceAmount, getAttributeAmount, getAttributes, getValueAmount, getEmptyValueAmount, getNumericValueAmount, getOutlierAmount, getDuplicateAmount, getMixedTypeAmount, clearGlobals
 
 def evaluate_dataset(dataset: dict):
@@ -9,18 +10,18 @@ def evaluate_dataset(dataset: dict):
 
     time.sleep(5)
 
-    evaluate(dataset)
+    df = evaluate(dataset)
 
     response = {
-        'Instances': getInstanceAmount(),
-        'Attributes': getAttributeAmount(),
-        'Attribute names': getAttributes(),
-        'Values': getValueAmount(),
-        'Missing values': getEmptyValueAmount(),
+        'Instances': getInstanceAmount(df),
+        'Attributes': getAttributeAmount(df),
+        'Attribute names': getAttributes(df),
+        'Values': getValueAmount(df),
+        'Missing values': getEmptyValueAmount(df),
         'Numeric values': getNumericValueAmount(),
         'Outliers': getOutlierAmount(),
-        'Duplicate instances': getDuplicateAmount(),
-        'Mixed datatypes': getMixedTypeAmount()
+        'Duplicate instances': getDuplicateAmount(df),
+        'Mixed datatypes': getMixedTypeAmount(df)
     }
 
     clearGlobals()
@@ -39,9 +40,9 @@ def evaluate_dataset(dataset: dict):
 #     result = requests.get(apiLink)
 
 #     if result.status_code == 200:
-#         #data = result.json()
-#         f = open('api-service/app/algorithm/test.json')
-#         data = json.load(f)
+#         data = result.json()
+#         #f = open('api-service/app/algorithm/test.json')
+#         #data = json.load(f)
 #         response = evaluate_dataset(data)
 #         print(response)
 #     else:
