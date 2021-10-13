@@ -2,6 +2,9 @@ import requests
 import json
 import time
 import pandas as pd
+from .Analyze_Dataset import Get_A_List_Of_ML_Analysis, Get_Correlation_Classifier
+from .ML_Algorithms import Decision_Tree_Classifier as dtc
+from .ML_Algorithms import Random_Forest_Classifier as rfc
 from .evaluation_methods import evaluate, getInstanceAmount, getAttributeAmount, getAttributes, getValueAmount, getEmptyValueAmount, getNumericValueAmount, getOutlierAmount, getDuplicateAmount, getMixedTypeAmount, clearGlobals
 
 def evaluate_dataset(dataset: dict):
@@ -21,12 +24,18 @@ def evaluate_dataset(dataset: dict):
         'Numeric values': getNumericValueAmount(),
         'Outliers': getOutlierAmount(),
         'Duplicate instances': getDuplicateAmount(df),
-        'Mixed datatypes': getMixedTypeAmount(df)
+        'Mixed datatypes': getMixedTypeAmount(df),
+        'Decision Tree Classifier': Get_A_List_Of_ML_Analysis(dataset, dtc.get_DTC_statistical_analysis),
+        'Correlation Classifier' : Get_Correlation_Classifier(dataset)
     }
 
     clearGlobals()
+
+    #print(response)
     
     return response
+
+
 
 #For direct testing (remove the '.' "from .evaluation_methods import ...")
 # def main():

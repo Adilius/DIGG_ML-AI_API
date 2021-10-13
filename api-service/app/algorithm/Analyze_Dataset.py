@@ -10,11 +10,20 @@ from sklearn.model_selection import train_test_split  # Import train_test_split 
 from sklearn import preprocessing
 from sklearn import metrics #Import scikit-learn metrics module for accuracy calculation
 import pandas as pd
-from ML_Algorithms import Decision_Tree_Classifier as dtc
-from ML_Algorithms import Random_Forest_Classifier as rfc
+from .ML_Algorithms import Decision_Tree_Classifier as dtc
+from .ML_Algorithms import Random_Forest_Classifier as rfc
+from .ML_Algorithms import Correlation_Classifier as cc
+from .readJSON2PANDA import check_if_dict_has_keyword_named_results
 
 
-def Get_A_List_Of_ML_Analysis(df, ml_evaluator):
+def Get_A_List_Of_ML_Analysis(dict_dataset, ml_evaluator):
+
+    #check if dict has a keyword results
+    dict_dataset = check_if_dict_has_keyword_named_results(dict_dataset)
+
+    df = pd.DataFrame.from_dict(dict_dataset)
+
+    df = df.astype(str)
 
     columns = []
 
@@ -78,5 +87,19 @@ def Analyse_Dataset(df, ml_evaluator):
         feature_cols = []
 
         i += 1
+
+
+def Get_Correlation_Classifier(dict_dataset):
+
+    #check if dict has a keyword results
+    df = check_if_dict_has_keyword_named_results(dict_dataset)
+
+    df = df.astype(str)
+
+    le = preprocessing.LabelEncoder()
+    df = df.apply(le.fit_transform) 
+
+    correlation_matrix = cc.Correlation_Classifier(df)
+    return correlation_matrix
 
 

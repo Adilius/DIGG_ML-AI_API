@@ -13,7 +13,6 @@ from sklearn.model_selection import train_test_split  # Import train_test_split 
 from sklearn.tree import DecisionTreeClassifier
 from sklearn import preprocessing
 from sklearn import metrics #Import scikit-learn metrics module for accuracy calculation
-import pandas as pd
 
 def Decision_Tree_Classifier(df, columns, feature_cols, cur_column, i):
 
