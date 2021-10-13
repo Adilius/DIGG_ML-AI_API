@@ -1,63 +1,78 @@
+import requests
 import math
+import pandas as pd
 
 #Global variables for keeping track outside of functions:
-instanceList = [] #Stores every instance (for getInstanceAmount and duplicateCount)
-dataList = [] #Stores every value together with key and type (for mixedTypeCount and getEmptyValueAmount)
-attributeCheck = [] #To check if attribute appear more than once, if not it's probably part of the header (for attributeAdd)
-attributeList = [] #Store every atribute that appear more than once in attributeCheck (for attributeAdd and getAttributeAmount)
 numericList = [] #Stores every key with a numeric value together with the value (for floatConverter, stanDevCalc, outlierCount and getOutlierAmount)
 numericKeyList = [] #Stores key with a numeric value (for floatConverter and stanDevCalc)
 outlierAmount = 0 #Counts amount of outliers (for outlierCount and getOutlierAmount)
+jsonFull = []
 
 #Evaluate function
-def evaluate(data):
-    jsonCounter(data)
+def evaluate(jsonData):
+    global outlierAmount
+
+    jsonChecks(jsonData)
+    floatConverter()
     stanDevCalc()
+    df = pd.DataFrame(jsonFull)
+    return df
 
-#Goes through the entire json dataset and adds neccesary information to global variables
-def jsonCounter(data):
-    global instanceList
-    global dataList
+#Checks if json has next, and/or result attributes, if not, take the entire json
+def jsonChecks(jsonData):
+    global jsonFull
+    hasNext = False
+    hasResults = False
+    newJson = ""
 
-    for key in data.keys():
-        keyName = str(key)
-        value = data[keyName]
-        valueType = type(value)
-        if valueType == dict:
-            instanceList.append(value)
-            jsonCounter(value)
-        elif valueType == list:
-            for innerValue in value:
-                if type(innerValue) == dict:
-                    instanceList.append(innerValue)
-                    jsonCounter(innerValue)
-        else:
-            attributeAdd(keyName)
-            floatConvert(value, keyName)
-            dataList.append([keyName, valueType, value])
+    for key in jsonData.keys():
+        if key == "next":
+            nextLink = jsonData[key]
+            hasNext = True
+        if key == "results":
+            hasResults = True
+    if hasNext == True:
+        addToDict(jsonData["results"])
+        newJson = jsonChecks(linkToJSON(nextLink))
+        return
+    elif hasResults == True:
+        addToDict(jsonData["results"])
+    else:
+        addToDict(jsonData)
+    if newJson != "":
+        jsonChecks(newJson)
 
-#Adds attributes to attributeList if they appear more than once
-def attributeAdd(attribute):
-    global attributeList
-    global attributeCheck
+#Appends json to jsonFull
+def addToDict(results):
+    global jsonFull
 
-    if attribute in attributeCheck and attribute not in attributeList:
-        attributeList.append(attribute)
-    elif attribute not in attributeCheck:
-        attributeCheck.append(attribute)
+    for value in results:
+        jsonFull.append(value)
+
+#Converts recieved link to json data
+def linkToJSON(link):
+    result = requests.get(link)
+    data = result.json()
+    return data
 
 #Converts numeric values to float type if possible
-def floatConvert(value, keyName):
+def floatConverter():
     global numericList
     global numericKeyList
+    global jsonFull
 
-    try:
-        floatValue = float(value.replace(',', '.'))
-        numericList.append([keyName, floatValue])
-        if keyName not in numericKeyList:
-            numericKeyList.append(keyName)
-    except:
-        pass
+    for instance in jsonFull:
+        for val in instance:
+            try:
+                floatValue = instance[val]
+                floatValue = floatValue.replace(',', '.')
+                floatValue = floatValue.replace(' ', '')
+                floatValue = round(float(floatValue), 2)
+                numericList.append([val, floatValue])
+                if val not in numericKeyList:
+                    numericKeyList.append(val)
+            except:
+                pass
 
 #Calcualtes standard deviation for every key with numeric values
 def stanDevCalc():
@@ -94,105 +109,58 @@ def outlierCount(keyName, mean, stanDev):
             if value[1] > mean+(stanDev*3) or value[1] < mean-(stanDev*3):
                 outlierAmount+=1
 
-#Counts amount of duplicates
-def duplicateCount():
-    global instanceList
-    duplicates = 0
+#Counts amount of attributes with mixed data types
+def mixedTypeCount(df):
+    global jsonFull
 
-    for instance in instanceList:
-        duplicateCheck = 0
-        for instanceCheck in reversed(instanceList):
-            if instance == instanceCheck:
-                duplicateCheck+=1
-        if duplicateCheck > 1:
-            duplicates+=1
-        instanceList.remove(instanceCheck)
-    
-    return duplicates
+    jsonTemp = jsonFull
+    mixedTypeAmount = 0
 
-#Counts amount of mixed datatypes
-def mixedTypeCount():
-    global dataList
-    global attributeList
-    mixedDataTypeAmount = 0
-
-    for attribute in attributeList:
+    for att in df.columns:
         mixedTypeCheck = False
-        for value in dataList:
-            if attribute == value[0]:
-                for valueCheck in reversed(dataList):
-                    if attribute == valueCheck[0]:
-                        if value[1] != valueCheck[1]:
-                            mixedTypeCheck = True
-                        dataList.remove(valueCheck)
+        for inst in jsonTemp:
+            for instCheck in reversed(jsonTemp):
+                if type(inst[att]) != type(instCheck[att]):
+                    mixedTypeCheck = True
+                jsonTemp.remove(instCheck)
         if mixedTypeCheck == True:
-            mixedDataTypeAmount+=1
+            mixedTypeAmount+=1
 
-    return mixedDataTypeAmount
+    return mixedTypeAmount
 
 #Returns amount of instances
-def getInstanceAmount():
-    global instanceList
-    return len(instanceList)
+def getInstanceAmount(df):
+    return len(df)
 
 #Returns amount of attributes
-def getAttributeAmount():
-    global attributeList
-    return len(attributeList)
+def getAttributeAmount(df):
+    return len(df.columns)
 
 #Returs string containing all attributes
-def getAttributes():
-    global attributeList
-    attributeString = '[ '
+def getAttributes(df):
+    attributes = []
+    for col in df:
+        attributes.append(col)
 
-    for attribute in attributeList:
-        attributeString += attribute + ', '
-    
-    attributeString = attributeString[:-2] + ' ]'
-    return attributeString
+    return attributes
 
 #Returns amount of values
-def getValueAmount():
-    global dataList
-    global attributeList
-    valueAmount = 0
-
-    for value in dataList:
-        valueCheck = False
-        for attribute in attributeList:
-            if value[0] == attribute:
-                valueCheck = True
-        if valueCheck == True:
-            valueAmount+=1
-
-    return valueAmount
+def getValueAmount(df):
+    return df.size
 
 #Returns amount of empty fields
-def getEmptyValueAmount():
-    global dataList
-    emptyAmount = 0
+def getEmptyValueAmount(df):
+    emptyList = (df == "").sum()
+    misVal = 0
+    for value in emptyList:
+        misVal+=value
 
-    for value in dataList:
-        if value[2] == "":
-            emptyAmount+=1
-
-    return emptyAmount
+    return misVal
 
 #Returns amount of numeric values
 def getNumericValueAmount():
     global numericList
-    global attributeList
-    numericAmount = 0
-
-    for value in numericList:
-        valueCheck = False
-        for attribute in attributeList:
-            if value[0] == attribute:
-                valueCheck = True
-        if valueCheck == True:
-            numericAmount+=1
-
-    return numericAmount
+    return len(numericList)
 
 #Returns amount of outliers
 def getOutlierAmount():
@@ -200,27 +168,21 @@ def getOutlierAmount():
     return outlierAmount
 
 #Returns amount of duplicates
-def getDuplicateAmount():
-    return duplicateCount()
+def getDuplicateAmount(df):
+    return len(df)-len(df.drop_duplicates())
 
 #Returns amount of attributes with mixed datatypes
-def getMixedTypeAmount():
-    return mixedTypeCount()
+def getMixedTypeAmount(df):
+    return mixedTypeCount(df)
 
 #Clear global values
 def clearGlobals():
-    global instanceList
-    global attributeCheck
-    global attributeList
     global numericList
     global numericKeyList
     global outlierAmount
-    global dataList
+    global jsonFull
 
-    instanceList.clear()
-    attributeCheck.clear()
-    attributeList.clear()
     numericList.clear()
     numericKeyList.clear()
     outlierAmount = 0 
-    dataList.clear()
+    jsonFull.clear()
