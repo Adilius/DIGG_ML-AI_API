@@ -9,10 +9,7 @@ from .evaluation_methods import evaluate, getInstanceAmount, getAttributeAmount,
 
 def evaluate_dataset(dataset: dict):
 
-    #Anropa funktioner här fär att skapa en dictionary som returneras
-
     time.sleep(5)
-
     df = evaluate(dataset)
 
     response = {
@@ -20,22 +17,23 @@ def evaluate_dataset(dataset: dict):
         'Attributes': getAttributeAmount(df),
         'Attribute names': getAttributes(df),
         'Values': getValueAmount(df),
-        'Missing values': getEmptyValueAmount(df),
-        'Numeric values': getNumericValueAmount(),
-        'Outliers': getOutlierAmount(),
-        'Duplicate instances': getDuplicateAmount(df),
-        'Mixed datatypes': getMixedTypeAmount(df),
         'Decision Tree Classifier': Get_A_List_Of_ML_Analysis(dataset, dtc.get_DTC_statistical_analysis),
         'Correlation Classifier' : Get_Correlation_Classifier(dataset)
     }
 
+    if getEmptyValueAmount(df) > 0:
+        response.update({'Missing values': getEmptyValueAmount(df)})
+    if getNumericValueAmount() > 0:
+        response.update({'Numeric values': getNumericValueAmount()})
+    if getOutlierAmount() > 0:
+        response.update({'Outliers': getOutlierAmount()})
+    if getDuplicateAmount(df) > 0:
+        response.update({'Duplicate instances': getDuplicateAmount(df)})
+    if getMixedTypeAmount(df) > 0:
+        response.update({'Mixed datatypes': getMixedTypeAmount(df)})
+
     clearGlobals()
-
-    #print(response)
-    
     return response
-
-
 
 #For direct testing (remove the '.' "from .evaluation_methods import ...")
 # def main():

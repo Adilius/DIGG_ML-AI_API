@@ -10,8 +10,6 @@ jsonFull = []
 
 #Evaluate function
 def evaluate(jsonData):
-    global outlierAmount
-
     jsonChecks(jsonData)
     floatConverter()
     stanDevCalc()
