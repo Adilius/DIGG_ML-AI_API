@@ -144,7 +144,7 @@ def getAttributes(df):
 
 #Returns amount of values
 def getValueAmount(df):
-    return df.size
+    return int(df.size)
 
 #Returns amount of empty fields
 def getEmptyValueAmount(df):
