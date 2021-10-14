@@ -18,11 +18,11 @@ jobs:
       - name: Start containers
         run: docker-compose -f "docker-compose.yml" up -d
 
-      - name: Test API
-        run: docker-compose exec -T api_service pytest . -v
-
       - name: Test DB
         run: docker-compose exec -T db_service pytest . -v
+
+      - name: Test API
+        run: docker-compose exec -T api_service pytest . -v
 
       - name: Stop containers
         run: docker-compose down
