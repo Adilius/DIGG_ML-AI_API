@@ -10,7 +10,8 @@ Clone the repository: `git clone https://github.com/Adilius/DIGG_ML-AI_API.git`
 Start docker desktop
 
 Build & run docker image: `docker-compose up`
-Build & run docker image from scratch: 'docker-compose up --build --force-recreate'
+
+Build & run docker image from scratch: `docker-compose up --build --force-recreate`
 
 # Run single files
 
@@ -20,7 +21,7 @@ Open bash terminal in virtual enviroment: `docker exec -it api bash`
 
 # Run tests
 
-Run tests in api service (docker must be up and running): 'docker-compose exec api_service pytest . -v'
+Run tests in api service (docker must be up and running): `docker-compose exec api_service pytest . -v`
 
 # Access urls to docker
 
