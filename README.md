@@ -10,7 +10,8 @@ Clone the repository: `git clone https://github.com/Adilius/DIGG_ML-AI_API.git`
 Start docker desktop
 
 Build & run docker image: `docker-compose up`
-Build & run docker image from scratch: 'docker-compose up --build --force-recreate'
+
+Build & run docker image from scratch: `docker-compose up --build --force-recreate`
 
 # Run single files
 
