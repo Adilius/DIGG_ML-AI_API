@@ -61,7 +61,7 @@ def request_url(url: str):
             if type(chunk) == str:
                 new_content += chunk
             elif type(chunk) == bytes:
-                new_content += chunk.decode()
+                new_content += chunk.decode(errors='ignore')
             if time.time() - start > timeout:
                 raise ValueError('timeout reached')
         response._content = str.encode(new_content)
