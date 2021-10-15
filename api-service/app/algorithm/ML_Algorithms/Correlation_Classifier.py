@@ -10,10 +10,6 @@ import numpy as np
 
 def Correlation_Classifier(df):
 
-    #print(df.corr(method ='pearson'))
-    #heatmap = sns.heatmap(df.corr(method ='pearson'), vmin=-1, vmax=1, annot=True)
-    #plt.figure(figsize=(20, 10))
-    #plt.show()
     correlation_matrix = df.corr(method ='pearson').values.tolist()
     for item in correlation_matrix:
         for i in item:
