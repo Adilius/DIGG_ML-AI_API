@@ -22,7 +22,7 @@ def evaluate_dataset(dataset: dict):
     }
 
     if getEmptyValueAmount(df) > 0:
-        response.update({'Missing values': getEmptyValueAmount(df)})
+        response.update({'Empty values': getEmptyValueAmount(df)})
     if getNumericValueAmount() > 0:
         response.update({'Numeric values': getNumericValueAmount()})
     if getOutlierAmount() > 0:
