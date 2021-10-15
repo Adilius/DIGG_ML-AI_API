@@ -128,7 +128,7 @@ def look_for_dicts(data):
 def look_for_dicts_from_api():
     df = pd.DataFrame()
     # example api from dataportal.se : https://konsumentverket.entryscape.net/rowstore/dataset/86ce5095-1641-4390-8987-bdc3c77625a7
-    url = "https://konsumentverket.entryscape.net/rowstore/dataset/86ce5095-1641-4390-8987-bdc3c77625a7"
+    url = "https://konsumentverket.entryscape.net/rowstore/dataset/86ce5095-1641-4390-8987-bdc3c77625a7?_limit=500"
     url=url+"?_limit=500"
    # print(url)
     #url = input("enter url for API: ") #write url

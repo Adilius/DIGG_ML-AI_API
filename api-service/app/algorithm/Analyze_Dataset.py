@@ -16,12 +16,12 @@ from .ML_Algorithms import Correlation_Classifier as cc
 from .readJSON2PANDA import check_if_dict_has_keyword_named_results
 
 
-def Get_A_List_Of_ML_Analysis(dict_dataset, ml_evaluator):
+def Get_A_List_Of_ML_Analysis(df, ml_evaluator):
 
     #check if dict has a keyword results
-    dict_dataset = check_if_dict_has_keyword_named_results(dict_dataset)
+    #dict_dataset = check_if_dict_has_keyword_named_results(dict_dataset)
 
-    df = pd.DataFrame.from_dict(dict_dataset)
+    #df = pd.DataFrame.from_dict(dict_dataset)
 
     df = df.astype(str)
 
@@ -89,10 +89,10 @@ def Analyse_Dataset(df, ml_evaluator):
         i += 1
 
 
-def Get_Correlation_Classifier(dict_dataset):
+def Get_Correlation_Classifier(df):
 
     #check if dict has a keyword results
-    df = check_if_dict_has_keyword_named_results(dict_dataset)
+    #df = check_if_dict_has_keyword_named_results(dict_dataset)
 
     df = df.astype(str)
 
