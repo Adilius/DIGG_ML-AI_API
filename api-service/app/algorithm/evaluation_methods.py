@@ -1,4 +1,4 @@
-from. jsonToDataframe import getNumericListLength, getOutliers, mixedTypeCount
+from .jsonToDataframe import getNumericListLength, getOutliers, mixedTypeCount
 
 #Returns amount of instances
 def getInstanceAmount(df):
