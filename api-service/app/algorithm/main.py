@@ -17,7 +17,7 @@ def evaluate_dataset(dataset: dict):
         'Attributes': getAttributeAmount(df),
         'Attribute names': getAttributes(df),
         'Values': getValueAmount(df),
-        'Decision Tree Classifier': Get_A_List_Of_ML_Analysis(dataset, dtc.get_DTC_statistical_analysis),
+        #'Decision Tree Classifier': Get_A_List_Of_ML_Analysis(dataset, dtc.get_DTC_statistical_analysis),
         #'Correlation Classifier' : Get_Correlation_Classifier(dataset)
     }
 
