@@ -126,8 +126,9 @@ def parse_csv(response):
         for row in csv_reader:
             dict_row = {}
             for index, col in enumerate(row):
-                key_value = {fields[index]:col}
-                dict_row.update(key_value)
+                if fields[index] != "":
+                    key_value = {fields[index]:col}
+                    dict_row.update(key_value)
             json_list.append(dict_row)
 
         # If no data was captured, then parsing failed

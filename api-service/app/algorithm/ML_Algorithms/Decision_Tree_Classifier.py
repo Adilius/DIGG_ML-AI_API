@@ -46,6 +46,7 @@ def Decision_Tree_Classifier(df, columns, feature_cols, cur_column, i):
 
 
 def get_DTC_statistical_analysis(df, columns, feature_cols, cur_column, i):
+
     X = df[feature_cols]
     Y = df.iloc[:, i]
 

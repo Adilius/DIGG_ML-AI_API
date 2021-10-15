@@ -4,24 +4,13 @@
 #             : The app will iterate every column/label in a dataset and return the accuracy
 #             : for each target based on a choosen ML_Algorithm
 
-import pandas as pd
 # Using Skicit-learn to split data into training and testing sets
 from sklearn.model_selection import train_test_split  # Import train_test_split function
 from sklearn import preprocessing
-from sklearn import metrics #Import scikit-learn metrics module for accuracy calculation
-import pandas as pd
-from .ML_Algorithms import Decision_Tree_Classifier as dtc
-from .ML_Algorithms import Random_Forest_Classifier as rfc
 from .ML_Algorithms import Correlation_Classifier as cc
-from .readJSON2PANDA import check_if_dict_has_keyword_named_results
 
 
-def Get_A_List_Of_ML_Analysis(dict_dataset, ml_evaluator):
-
-    #check if dict has a keyword results
-    dict_dataset = check_if_dict_has_keyword_named_results(dict_dataset)
-
-    df = pd.DataFrame.from_dict(dict_dataset)
+def Get_A_List_Of_ML_Analysis(df, ml_evaluator):
 
     df = df.astype(str)
 
@@ -89,10 +78,7 @@ def Analyse_Dataset(df, ml_evaluator):
         i += 1
 
 
-def Get_Correlation_Classifier(dict_dataset):
-
-    #check if dict has a keyword results
-    df = check_if_dict_has_keyword_named_results(dict_dataset)
+def Get_Correlation_Classifier(df):
 
     df = df.astype(str)
 
