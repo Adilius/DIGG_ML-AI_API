@@ -13,13 +13,12 @@ async def root():
 
 @api_router.get("/url/")
 async def url(url: str):
-    print('Incoming url request')
-    print(f'url = {url}')
+    print(f'Incoming url request:\n{url}')
 
     # Run checks
     response = data_handler.get_data(url)
 
-    print('response', response)
+    #print('response', response)
     #If we got error
     if 'Error' in response:
         return response
@@ -28,11 +27,19 @@ async def url(url: str):
             "Success": "URL valid"
         }
 
+@api_router.get("/parse/")
+async def parse(url: str):
+    print(f'Incoming parse request:\n{url}')
+
+    # Run checks
+    response = data_handler.get_data(url)
+
+    return response
+
 
 @api_router.get("/eval/")
 async def eval(url: str):
-    print('Incoming eval request')
-    print(f'url = {url}')
+    print(f'Incoming eval request: {url}')
     response = data_handler.get_data(url)
 
     #If we got error
@@ -43,31 +50,31 @@ async def eval(url: str):
     checksum = checksum_handler.get_checksum(response)
 
     # Check database first
+    print('Checking database:', end=" ")
     database_response = database_handler.get_result(url, checksum)
-
     if 'Error' in database_response:
-        print(database_response)
-        print('No stored results found')
+        print(next(iter(database_response.values())))
     else:
         print('Retrieved stored results')
         return database_response
         
 
     # Get evaluation
-    print('Creating new evaluation...')
+    print('Creating new evaluation...', end=" ")
     try:
         evaluation = main.evaluate_dataset(response)
     except:
-        print('Evaluation failed')
+        print('Failed')
         return {
             'Error':'Evaluation failed'
         }
+    print('Success')
 
     # Store in database
     try:
         response = database_handler.store_result(url, checksum, evaluation)
-        print(response)
-        print('Successfully posted results to database')
+        #print(response)
+        #print('Successfully posted results to database')
     except:
         print('Failed to post result to database')
 

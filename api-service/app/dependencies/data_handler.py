@@ -58,7 +58,10 @@ def request_url(url: str):
         response.raise_for_status()
         new_content = ""
         for chunk in response.iter_content(1024, decode_unicode=True):
-            new_content += chunk
+            if type(chunk) == str:
+                new_content += chunk
+            elif type(chunk) == bytes:
+                new_content += chunk.decode(errors='ignore')
             if time.time() - start > timeout:
                 raise ValueError('timeout reached')
         response._content = str.encode(new_content)
@@ -123,8 +126,9 @@ def parse_csv(response):
         for row in csv_reader:
             dict_row = {}
             for index, col in enumerate(row):
-                key_value = {fields[index]:col}
-                dict_row.update(key_value)
+                if fields[index] != "":
+                    key_value = {fields[index]:col}
+                    dict_row.update(key_value)
             json_list.append(dict_row)
 
         # If no data was captured, then parsing failed

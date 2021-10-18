@@ -3,4 +3,3 @@ https://opendata.umea.se/api/v2/catalog/datasets/skyddade-omraden-fageldirektive
 https://opendata.umea.se/api/v2/catalog/datasets/historiska-badvattentemperaturer-2019-fran-iot-projektet/exports/shp
 https://opendata.umea.se/api/v2/catalog/datasets/konsten-umea-kommun/exports/shp
 https://opendata.umea.se/api/v2/catalog/datasets/skyddade-omraden-nationalparker-sverigesweden/exports/shp
-https://opendata.umea.se/api/v2/catalog/datasets/corona-information-till-riskgrupper-om-affarers-anpassningar-for-dem/exports/shp

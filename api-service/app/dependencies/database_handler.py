@@ -49,7 +49,7 @@ def get_result(url: str, checksum: str):
             'Error':'Failed to get from database'
         }
 
-    print(f'response: {response.text}')
+    #print(f'Database response: {response.text}')
 
     if any(substr in response.text for substr in ['Error','error']):
         return {

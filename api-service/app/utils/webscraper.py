@@ -59,12 +59,24 @@ for page_number in range(1,374):
     search_results_length = len(search_results_li)
 
     for i in range(search_results_length):
-        search_results_li = driver.find_elements_by_class_name('search-result-list-item')
+        try:
+            search_results_li = driver.find_elements_by_class_name('search-result-list-item')
+        except:
+            continue
 
-        search_result_link = search_results_li[i].find_element_by_tag_name('a')
+        try:
+            search_result_link = search_results_li[i].find_element_by_tag_name('a')
+        except:
+            continue
 
-        dataset_link = search_result_link.get_attribute('href')
-        
-        open_dataset_page(dataset_link)
-        driver.get(f'https://www.dataportal.se/sv/datasets/?p={page_number}&q=&s=2&t=100&f=&rt=esterms_IndependentDataService%24esterms_ServedByDataService&c=true')
+        try:
+            dataset_link = search_result_link.get_attribute('href')
+        except:
+            continue
+
+        try:
+            open_dataset_page(dataset_link)
+            driver.get(f'https://www.dataportal.se/sv/datasets/?p={page_number}&q=&s=2&t=100&f=&rt=esterms_IndependentDataService%24esterms_ServedByDataService&c=true')
+        except:
+            continue
         time.sleep(TIME_TO_LOAD_PAGE)
