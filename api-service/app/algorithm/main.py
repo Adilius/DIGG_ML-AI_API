@@ -2,11 +2,9 @@ from .Analyze_Dataset import Get_A_List_Of_ML_Analysis, Get_Correlation_Classifi
 from .ML_Algorithms import Decision_Tree_Classifier as dtc
 from .jsonToDataframe import evaluate, clearGlobals
 from .evaluation_methods import getInstanceAmount, getAttributeAmount, getAttributes, getValueAmount, getEmptyValueAmount, getNumericValueAmount, getOutlierAmount, getDuplicateAmount, getMixedTypeAmount
-import time
 
 def evaluate_dataset(dataset: dict):
 
-    start = time.time()
     df = evaluate(dataset)
 
     response = {
@@ -31,9 +29,5 @@ def evaluate_dataset(dataset: dict):
         response.update({'Mixed datatypes': getMixedTypeAmount(df)})
 
     clearGlobals()
-    end = time.time()
-
-    time_measurements = end - start
-    #response.update({'Time Measurements': time_measurements})
 
     return response
