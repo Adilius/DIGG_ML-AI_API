@@ -64,8 +64,8 @@ def delete_book(url: str, checksum: str):
 @app.get("/get_data/", response_model = evaluation_model, responses={404: {"model": Message}})
 def get_data(url: str, checksum: str):
     query = db.session.query(Datasets).filter(
-            Datasets.url == url,
-            Datasets.checksum == checksum
+            Datasets.url == url
+            #Datasets.checksum == checksum
             ).first()   
     if query != None:
         return query
