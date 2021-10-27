@@ -61,7 +61,9 @@ async def eval(url: str):
 
     # Get evaluation
     print('Creating new evaluation...', end=" ")
+    #evaluation = main.evaluate_dataset(response)
     try:
+        #pass
         evaluation = main.evaluate_dataset(response)
     except:
         print('Failed')
@@ -69,12 +71,12 @@ async def eval(url: str):
             'Error':'Evaluation failed'
         }
     print('Success')
-
-    # Store in database
+    # Store in 
+    
     try:
         response = database_handler.store_result(url, evaluation)
-        #print(response)
-        #print('Successfully posted results to database')
+        #response = database_handler.store_result(url, evaluation)
+        print('Successfully posted results to database')
     except:
         print('Failed to post result to database')
 

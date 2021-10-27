@@ -10,7 +10,7 @@ def evaluate_dataset(dataset: dict):
     df = evaluate(dataset)
 
     response = {
-        'Header' : df.head(),
+        'Header' : df.head().to_dict(),
         'Instances': getInstanceAmount(df),
         'Attributes': getAttributeAmount(df),
         'Attribute names': getAttributes(df),
