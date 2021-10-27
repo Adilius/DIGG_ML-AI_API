@@ -8,7 +8,6 @@ class TestDatabase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.url = "string"
-        cls.checksum = "string"
         cls.evaluation = "string"
 
     def test_store_result_success(self):
@@ -19,13 +18,11 @@ class TestDatabase(unittest.TestCase):
 
         return_value = {
             'url': self.url,
-            'checksum': self.checksum,
             'evaluation': self.evaluation
         }
 
         test_response_payload = {
             'url': self.url,
-            'checksum': self.checksum,
             'evaluation': self.evaluation
         }
 
