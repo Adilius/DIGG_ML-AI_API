@@ -9,14 +9,13 @@ headers = {
     }
 
 # Store result in database
-def store_result(url: str, checksum: str, evaluation: dict):
+def store_result(url: str, evaluation: dict):
 
     eval_json = json.dumps(evaluation)
 
     # Collect data to send
     data = {
         'url' : url,
-        'checksum': checksum,
         'evaluation' : eval_json
     }
 
@@ -30,13 +29,12 @@ def store_result(url: str, checksum: str, evaluation: dict):
 
     return response.text
 
-# Get result using url and checksum
-def get_result(url: str, checksum: str):
+# Get result using url
+def get_result(url: str):
 
 
     payload = {
-        "url": url,
-        "checksum" : checksum
+        "url": url
     }
 
     try:

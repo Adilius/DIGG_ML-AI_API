@@ -25,7 +25,7 @@ async def root():
 
 @app.post("/add_data/", responses={404: {"model": Message}})
 def add_data(data_entry: SchemaDataset_table):
-    db_data = ModelDatasets(url=data_entry.url, checksum=data_entry.checksum, evaluation=data_entry.evaluation)
+    db_data = ModelDatasets(url=data_entry.url, evaluation=data_entry.evaluation)
     try:
         if db_data.url == "test_url":
             filler = "filler"
@@ -33,15 +33,14 @@ def add_data(data_entry: SchemaDataset_table):
             db.session.add(db_data)
             db.session.commit()
     except:
-        return JSONResponse(status_code=404, content={"error": "url and checksum combination already exists in database"})
+        return JSONResponse(status_code=404, content={"error": "url combination already exists in database"})
     return JSONResponse(status_code=200, content={"success": "Data was added to Database"})
 
 @app.put("/update/", responses={404: {"model": Message}})
-def update_data(url: str, checksum: str, evaluation: str):
+def update_data(url: str, evaluation: str):
     try:
         query = db.session.query(Datasets).filter(
-            Datasets.url == url,
-            Datasets.checksum == checksum
+            Datasets.url == url
             ).first()
         query.evaluation = evaluation
         db.session.commit()
@@ -50,11 +49,10 @@ def update_data(url: str, checksum: str, evaluation: str):
     return JSONResponse(status_code=200, content={"success": "Data was updated"})
 
 @app.delete("/delete/", responses={404: {"model": Message}})
-def delete_book(url: str, checksum: str):
+def delete_book(url: str):
     try:
         db.session.query(Datasets).filter(
-            Datasets.url == url,
-            Datasets.checksum == checksum
+            Datasets.url == url
         ).delete()
         db.session.commit()
     except:
@@ -62,10 +60,9 @@ def delete_book(url: str, checksum: str):
     return JSONResponse(status_code=200, content={"success": "Data was deleted"})
 
 @app.get("/get_data/", response_model = evaluation_model, responses={404: {"model": Message}})
-def get_data(url: str, checksum: str):
+def get_data(url: str):
     query = db.session.query(Datasets).filter(
             Datasets.url == url
-            #Datasets.checksum == checksum
             ).first()   
     if query != None:
         return query

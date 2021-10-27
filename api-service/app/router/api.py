@@ -46,12 +46,12 @@ async def eval(url: str):
     if 'Error' in response:
         return response
 
-    # Get the checksum
-    checksum = checksum_handler.get_checksum(response)
+    # Get the checksum - depricated
+    #checksum = checksum_handler.get_checksum(response)
 
     # Check database first
     print('Checking database:', end=" ")
-    database_response = database_handler.get_result(url, checksum)
+    database_response = database_handler.get_result(url)
     if 'Error' in database_response:
         print(next(iter(database_response.values())))
     else:
@@ -72,7 +72,7 @@ async def eval(url: str):
 
     # Store in database
     try:
-        response = database_handler.store_result(url, checksum, evaluation)
+        response = database_handler.store_result(url, evaluation)
         #print(response)
         #print('Successfully posted results to database')
     except:
