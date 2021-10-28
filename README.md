@@ -21,17 +21,20 @@ Open bash terminal in virtual enviroment: `docker exec -it api bash`
 
 # Run tests
 
-Run tests in api service (docker must be up and running): `docker-compose exec api_service pytest . -v`
+Test API service: `docker-compose exec api_service pytest . -v`
 
-# Access urls to docker
+Test DB service: `docker-compose exec db_service pytest . -v`
 
-Root url: http://localhost:8080/
+# Access url to API docs
 
 Docs urls: http://localhost:8080/docs
 
-Dataset url: http://localhost:8080/api/ (where our logic goes)
-
-Dataset test url: http://localhost:8080/api/url/?url=https://opendata.umea.se/api/v2/catalog/datasets/skyddade-omraden-djur-och-vaxtskyddsomraden-sverigesweden/records
+| Link        | ~Time           |
+| ------------- |:-------------:|
+| [Kronofogden1](https://kronofogden.entryscape.net/rowstore/dataset/9a1d6efb-d34c-4b8c-890f-f1625050a6bd?_limit=500&_offset=0)      | 11s |
+| [Kronofogden2](https://kronofogden.entryscape.net/rowstore/dataset/84b8876c-091a-4b00-a625-918060ce10b9?_limit=500&_offset=0)      | 13s |
+| [Kronofogden3](https://kronofogden.entryscape.net/store/2/resource/201)      | 11s |
+| [Konsumentverket1](https://konsumentverket.entryscape.net/rowstore/dataset/ee53f020-2d4a-4a77-bffd-2b940dec5589)      | 11s |
 
 # Project structure
 
