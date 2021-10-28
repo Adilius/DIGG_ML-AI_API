@@ -1,3 +1,13 @@
+<p align="center">
+  <img width="418" height="418" src="https://user-images.githubusercontent.com/43440295/139247048-9c04a67f-b325-47b2-bef6-71b4df965a42.png" alt='ode'>
+</p>
+
+<p align="center">
+<em>Open Data Evaluator</em>
+</p>
+
+---
+
 # DIGG project A.
 Enabling open data for machine learning and AI
 
